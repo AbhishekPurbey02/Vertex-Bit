@@ -1,39 +1,26 @@
 from flask import Flask, request, jsonify
 from flask_cors import CORS
-import psycopg2
-import psycopg2.extras
+import json
 import os
 from datetime import datetime
 
 app = Flask(__name__)
-CORS(app)  # This allows your Flutter app to talk to this backend
+CORS(app)  # This fixes CORS too!
 
-# Database connection (will use environment variable on Render)
-DATABASE_URL = os.environ.get('DATABASE_URL', 'postgresql://localhost:5432/vertexbit')
+# File to store contacts
+CONTACTS_FILE = 'contacts.json'
 
-def get_db_connection():
-    conn = psycopg2.connect(DATABASE_URL)
-    return conn
+# Load existing contacts
+def load_contacts():
+    if os.path.exists(CONTACTS_FILE):
+        with open(CONTACTS_FILE, 'r') as f:
+            return json.load(f)
+    return []
 
-# Create table if not exists
-def init_db():
-    conn = get_db_connection()
-    cur = conn.cursor()
-    cur.execute('''
-        CREATE TABLE IF NOT EXISTS contacts (
-            id SERIAL PRIMARY KEY,
-            name VARCHAR(100) NOT NULL,
-            email VARCHAR(100) NOT NULL,
-            phone VARCHAR(20) NOT NULL,
-            subject VARCHAR(200),
-            message TEXT NOT NULL,
-            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-        )
-    ''')
-    conn.commit()
-    cur.close()
-    conn.close()
-    print("Database initialized successfully!")
+# Save contacts
+def save_contacts(contacts):
+    with open(CONTACTS_FILE, 'w') as f:
+        json.dump(contacts, f, indent=2)
 
 # Health check endpoint
 @app.route('/api/health', methods=['GET'])
@@ -45,6 +32,7 @@ def health():
 def contact():
     try:
         data = request.get_json()
+        print(f"Received: {data}")  # This will show in terminal
         
         name = data.get('name')
         email = data.get('email')
@@ -56,16 +44,21 @@ def contact():
         if not name or not email or not phone or not message:
             return jsonify({'error': 'All fields are required'}), 400
         
-        # Save to database
-        conn = get_db_connection()
-        cur = conn.cursor()
-        cur.execute('''
-            INSERT INTO contacts (name, email, phone, subject, message, created_at)
-            VALUES (%s, %s, %s, %s, %s, %s)
-        ''', (name, email, phone, subject, message, datetime.now()))
-        conn.commit()
-        cur.close()
-        conn.close()
+        # Save to JSON file
+        contacts = load_contacts()
+        new_contact = {
+            'id': len(contacts) + 1,
+            'name': name,
+            'email': email,
+            'phone': phone,
+            'subject': subject,
+            'message': message,
+            'created_at': datetime.now().isoformat()
+        }
+        contacts.append(new_contact)
+        save_contacts(contacts)
+        
+        print(f"Saved contact #{new_contact['id']} - {name}")
         
         return jsonify({
             'success': True,
@@ -73,22 +66,17 @@ def contact():
         }), 200
         
     except Exception as e:
+        print(f"Error: {e}")
         return jsonify({'error': str(e)}), 500
 
-# Get all contacts (for admin dashboard later)
+# Get all contacts (for admin)
 @app.route('/api/contacts', methods=['GET'])
 def get_contacts():
-    try:
-        conn = get_db_connection()
-        cur = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
-        cur.execute('SELECT * FROM contacts ORDER BY created_at DESC')
-        contacts = [dict(row) for row in cur.fetchall()]
-        cur.close()
-        conn.close()
-        return jsonify(contacts), 200
-    except Exception as e:
-        return jsonify({'error': str(e)}), 500
+    contacts = load_contacts()
+    return jsonify(contacts), 200
 
 if __name__ == '__main__':
-    init_db()
+    print(" Vertex Bit Backend Starting...")
+    print(" API URL: http://localhost:5000")
+    print(" Contact endpoint: http://localhost:5000/api/contact")
     app.run(debug=True, port=5000)

@@ -73,147 +73,164 @@ class _ContactScreenState extends State<ContactScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 60),
-      color: Colors.white,
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          // Left side - Contact Info
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const Text(
-                  'Get in Touch',
-                  style: TextStyle(fontSize: 32, fontWeight: FontWeight.bold, color: Color(0xFF1A1A1A)),
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Get in Touch'),
+        backgroundColor: const Color(0xFF0F2B5B),
+        foregroundColor: Colors.white,
+        elevation: 0,
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+          onPressed: () => Navigator.pop(context),
+        ),
+      ),
+      body: SingleChildScrollView(
+        child: Container(
+          padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 32),
+          color: Colors.white,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              // Header
+              const Text(
+                "Let's discuss your next project",
+                style: TextStyle(
+                  fontSize: 24,
+                  fontWeight: FontWeight.bold,
+                  color: Color(0xFF1A1A1A),
                 ),
-                const SizedBox(height: 16),
-                const Text(
-                  "Let's discuss your next project",
-                  style: TextStyle(fontSize: 18, color: Color(0xFF666666)),
-                ),
-                const SizedBox(height: 40),
-                _buildContactInfo(
-                  Icons.location_on,
-                  'Address',
-                  'Itahari, Sunsari, Nepal',
-                ),
-                const SizedBox(height: 24),
-                _buildContactInfo(
-                  Icons.email,
-                  'Email',
-                  'hello@vertexbit.com',
-                ),
-                const SizedBox(height: 24),
-                _buildContactInfo(
-                  Icons.phone,
-                  'Phone',
-                  '+977 98XXXXXXXX',
-                ),
-              ],
-            ),
-          ),
-          
-          const SizedBox(width: 40),
-          
-          // Right side - Contact Form
-          Expanded(
-            child: Container(
-              padding: const EdgeInsets.all(32),
-              decoration: BoxDecoration(
-                color: const Color(0xFFF8F9FA),
-                borderRadius: BorderRadius.circular(16),
               ),
-              child: Form(
-                key: _formKey,
-                child: Column(
-                  children: [
-                    if (_successMessage != null)
-                      Container(
-                        padding: const EdgeInsets.all(12),
-                        decoration: BoxDecoration(
-                          color: Colors.green.withOpacity(0.1),
-                          borderRadius: BorderRadius.circular(8),
-                          border: Border.all(color: Colors.green),
-                        ),
-                        child: Text(_successMessage!, style: const TextStyle(color: Colors.green)),
-                      ),
-                    if (_errorMessage != null)
-                      Container(
-                        padding: const EdgeInsets.all(12),
-                        decoration: BoxDecoration(
-                          color: Colors.red.withOpacity(0.1),
-                          borderRadius: BorderRadius.circular(8),
-                          border: Border.all(color: Colors.red),
-                        ),
-                        child: Text(_errorMessage!, style: const TextStyle(color: Colors.red)),
-                      ),
-                    const SizedBox(height: 16),
-                    _buildTextField(_nameController, 'Your Name *', Icons.person),
-                    const SizedBox(height: 16),
-                    _buildTextField(_emailController, 'Your Email *', Icons.email),
-                    const SizedBox(height: 16),
-                    _buildTextField(_phoneController, 'Phone *', Icons.phone),
-                    const SizedBox(height: 16),
-                    _buildTextField(_subjectController, 'Subject', Icons.subject),
-                    const SizedBox(height: 16),
-                    _buildMessageField(_messageController, 'Message *'),
-                    const SizedBox(height: 24),
-                    SizedBox(
-                      width: double.infinity,
-                      child: ElevatedButton(
-                        onPressed: _isLoading ? null : submitForm,
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: const Color(0xFF0F2B5B),
-                          foregroundColor: Colors.white,
-                          padding: const EdgeInsets.symmetric(vertical: 16),
-                          shape: RoundedRectangleBorder(
+              const SizedBox(height: 32),
+              
+              // Contact Info Cards
+              Row(
+                children: [
+                  Expanded(child: _buildContactCard(Icons.location_on, 'Address', 'Itahari, Sunsari, Nepal')),
+                  const SizedBox(width: 16),
+                  Expanded(child: _buildContactCard(Icons.email, 'Email', 'hello@vertexbit.com')),
+                  const SizedBox(width: 16),
+                  Expanded(child: _buildContactCard(Icons.phone, 'Phone', '+977 98XXXXXXXX')),
+                ],
+              ),
+              
+              const SizedBox(height: 40),
+              
+              // Contact Form
+              Container(
+                padding: const EdgeInsets.all(24),
+                decoration: BoxDecoration(
+                  color: const Color(0xFFF8F9FA),
+                  borderRadius: BorderRadius.circular(16),
+                ),
+                child: Form(
+                  key: _formKey,
+                  child: Column(
+                    children: [
+                      if (_successMessage != null)
+                        Container(
+                          padding: const EdgeInsets.all(12),
+                          decoration: BoxDecoration(
+                            color: Colors.green.withOpacity(0.1),
                             borderRadius: BorderRadius.circular(8),
+                            border: Border.all(color: Colors.green),
+                          ),
+                          child: Text(
+                            _successMessage!,
+                            style: const TextStyle(color: Colors.green),
                           ),
                         ),
-                        child: _isLoading
-                            ? const SizedBox(
-                                height: 20,
-                                width: 20,
-                                child: CircularProgressIndicator(
-                                  strokeWidth: 2,
-                                  valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
-                                ),
-                              )
-                            : const Text('Send Message', style: TextStyle(fontSize: 16)),
+                      if (_errorMessage != null)
+                        Container(
+                          padding: const EdgeInsets.all(12),
+                          decoration: BoxDecoration(
+                            color: Colors.red.withOpacity(0.1),
+                            borderRadius: BorderRadius.circular(8),
+                            border: Border.all(color: Colors.red),
+                          ),
+                          child: Text(
+                            _errorMessage!,
+                            style: const TextStyle(color: Colors.red),
+                          ),
+                        ),
+                      const SizedBox(height: 16),
+                      
+                      _buildTextField(_nameController, 'Your Name *', Icons.person),
+                      const SizedBox(height: 16),
+                      _buildTextField(_emailController, 'Your Email *', Icons.email),
+                      const SizedBox(height: 16),
+                      _buildTextField(_phoneController, 'Phone *', Icons.phone),
+                      const SizedBox(height: 16),
+                      _buildTextField(_subjectController, 'Subject', Icons.subject),
+                      const SizedBox(height: 16),
+                      _buildMessageField(_messageController, 'Message *'),
+                      const SizedBox(height: 24),
+                      
+                      SizedBox(
+                        width: double.infinity,
+                        child: ElevatedButton(
+                          onPressed: _isLoading ? null : submitForm,
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: const Color(0xFF0F2B5B),
+                            foregroundColor: Colors.white,
+                            padding: const EdgeInsets.symmetric(vertical: 16),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                          ),
+                          child: _isLoading
+                              ? const SizedBox(
+                                  height: 20,
+                                  width: 20,
+                                  child: CircularProgressIndicator(
+                                    strokeWidth: 2,
+                                    valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                                  ),
+                                )
+                              : const Text('Send Message', style: TextStyle(fontSize: 16)),
+                        ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ),
-            ),
+            ],
           ),
-        ],
+        ),
       ),
     );
   }
   
-  Widget _buildContactInfo(IconData icon, String title, String value) {
-    return Row(
-      children: [
-        Container(
-          padding: const EdgeInsets.all(10),
-          decoration: BoxDecoration(
-            color: const Color(0xFF0F2B5B).withOpacity(0.1),
-            borderRadius: BorderRadius.circular(8),
+  Widget _buildContactCard(IconData icon, String title, String value) {
+    return Container(
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: const Color(0xFFF8F9FA),
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(color: Colors.grey.withOpacity(0.1)),
+      ),
+      child: Column(
+        children: [
+          Container(
+            padding: const EdgeInsets.all(10),
+            decoration: BoxDecoration(
+              color: const Color(0xFF0F2B5B).withOpacity(0.1),
+              borderRadius: BorderRadius.circular(8),
+            ),
+            child: Icon(icon, color: const Color(0xFF0F2B5B), size: 24),
           ),
-          child: Icon(icon, color: const Color(0xFF0F2B5B), size: 24),
-        ),
-        const SizedBox(width: 16),
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(title, style: const TextStyle(color: Color(0xFF999999), fontSize: 12)),
-            Text(value, style: const TextStyle(fontSize: 16, color: Color(0xFF1A1A1A))),
-          ],
-        ),
-      ],
+          const SizedBox(height: 12),
+          Text(
+            title,
+            style: const TextStyle(color: Color(0xFF999999), fontSize: 12),
+          ),
+          const SizedBox(height: 4),
+          Text(
+            value,
+            textAlign: TextAlign.center,
+            style: const TextStyle(fontSize: 14, color: Color(0xFF1A1A1A)),
+          ),
+        ],
+      ),
     );
   }
   
@@ -228,6 +245,8 @@ class _ContactScreenState extends State<ContactScreen> {
           borderRadius: BorderRadius.circular(8),
           borderSide: const BorderSide(color: Color(0xFF0F2B5B), width: 2),
         ),
+        filled: true,
+        fillColor: Colors.white,
       ),
       validator: (value) {
         if (label.contains('*') && (value == null || value.isEmpty)) {
@@ -250,6 +269,8 @@ class _ContactScreenState extends State<ContactScreen> {
           borderRadius: BorderRadius.circular(8),
           borderSide: const BorderSide(color: Color(0xFF0F2B5B), width: 2),
         ),
+        filled: true,
+        fillColor: Colors.white,
       ),
       validator: (value) {
         if (label.contains('*') && (value == null || value.isEmpty)) {
