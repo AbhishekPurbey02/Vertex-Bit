@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import '../utils/constants.dart';
 
 class Navbar extends StatelessWidget {
   final int selectedIndex;
@@ -15,12 +14,7 @@ class Navbar extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 16),
-      decoration: const BoxDecoration(
-        color: AppColors.black,
-        border: Border(
-          bottom: BorderSide(color: AppColors.electricBlue, width: 1),
-        ),
-      ),
+      color: Colors.white,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
@@ -28,17 +22,17 @@ class Navbar extends StatelessWidget {
           Row(
             children: [
               Container(
-                width: 32,
-                height: 32,
+                width: 36,
+                height: 36,
                 decoration: BoxDecoration(
-                  color: AppColors.electricBlue,
+                  color: const Color(0xFF0F2B5B),
                   shape: BoxShape.circle,
                 ),
                 child: const Center(
                   child: Text(
                     'V',
                     style: TextStyle(
-                      color: Colors.black,
+                      color: Colors.white,
                       fontWeight: FontWeight.bold,
                       fontSize: 18,
                     ),
@@ -47,10 +41,11 @@ class Navbar extends StatelessWidget {
               ),
               const SizedBox(width: 8),
               const Text(
-                AppStrings.companyName,
+                'Vertex Bit',
                 style: TextStyle(
                   fontSize: 20,
                   fontWeight: FontWeight.bold,
+                  color: Color(0xFF1A1A1A),
                   letterSpacing: 1,
                 ),
               ),
@@ -81,13 +76,15 @@ class Navbar extends StatelessWidget {
   }
   
   Widget _buildNavLink(String title, int index) {
+    final isSelected = selectedIndex == index;
     return GestureDetector(
       onTap: () => onItemSelected(index),
       child: Text(
         title,
         style: TextStyle(
-          color: selectedIndex == index ? AppColors.electricBlue : Colors.white,
-          fontWeight: selectedIndex == index ? FontWeight.bold : FontWeight.normal,
+          color: isSelected ? const Color(0xFF0F2B5B) : const Color(0xFF666666),
+          fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
+          fontSize: 14,
         ),
       ),
     );

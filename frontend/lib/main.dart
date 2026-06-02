@@ -17,7 +17,7 @@ class VertexBitApp extends StatelessWidget {
         brightness: Brightness.dark,
         primaryColor: Colors.black,
         scaffoldBackgroundColor: Colors.black,
-        fontFamily: 'Poppins',
+        // fontFamily: 'Poppins',
         colorScheme: const ColorScheme.dark(
           primary: Colors.black,
           secondary: Color(0xFF00D4FF), // Electric Blue

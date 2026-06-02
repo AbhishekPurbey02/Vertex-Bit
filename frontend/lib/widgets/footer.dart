@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import '../utils/constants.dart';
 
 class Footer extends StatelessWidget {
   const Footer({super.key});
@@ -8,7 +7,7 @@ class Footer extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 48),
-      color: AppColors.darkGray,
+      color: const Color(0xFF0F2B5B),  // Dark blue background
       child: Column(
         children: [
           Row(
@@ -19,12 +18,45 @@ class Footer extends StatelessWidget {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Text(
-                    AppStrings.companyName,
-                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                  Row(
+                    children: [
+                      Container(
+                        width: 28,
+                        height: 28,
+                        decoration: const BoxDecoration(
+                          color: Colors.white,
+                          shape: BoxShape.circle,
+                        ),
+                        child: const Center(
+                          child: Text(
+                            'V',
+                            style: TextStyle(
+                              color: Color(0xFF0F2B5B),
+                              fontWeight: FontWeight.bold,
+                              fontSize: 14,
+                            ),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(width: 8),
+                      const Text(
+                        'Vertex Bit',
+                        style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white,
+                        ),
+                      ),
+                    ],
                   ),
                   const SizedBox(height: 16),
-                  Text(AppStrings.tagline, style: const TextStyle(color: AppColors.gray, fontSize: 12)),
+                  const SizedBox(
+                    width: 200,
+                    child: Text(
+                      'Transforming business through smart digital solutions.',
+                      style: TextStyle(color: Colors.white70, fontSize: 12),
+                    ),
+                  ),
                 ],
               ),
               
@@ -32,11 +64,15 @@ class Footer extends StatelessWidget {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: const [
-                  Text('Company', style: TextStyle(fontWeight: FontWeight.bold)),
+                  Text('Company', style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white)),
                   SizedBox(height: 8),
-                  Text('About Us', style: TextStyle(color: AppColors.gray)),
-                  Text('Our Team', style: TextStyle(color: AppColors.gray)),
-                  Text('Portfolio', style: TextStyle(color: AppColors.gray)),
+                  Text('About Us', style: TextStyle(color: Colors.white70, fontSize: 13)),
+                  SizedBox(height: 6),
+                  Text('Our Team', style: TextStyle(color: Colors.white70, fontSize: 13)),
+                  SizedBox(height: 6),
+                  Text('Portfolio', style: TextStyle(color: Colors.white70, fontSize: 13)),
+                  SizedBox(height: 6),
+                  Text('Reviews', style: TextStyle(color: Colors.white70, fontSize: 13)),
                 ],
               ),
               
@@ -44,11 +80,15 @@ class Footer extends StatelessWidget {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: const [
-                  Text('Services', style: TextStyle(fontWeight: FontWeight.bold)),
+                  Text('Services', style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white)),
                   SizedBox(height: 8),
-                  Text('Web Development', style: TextStyle(color: AppColors.gray)),
-                  Text('Mobile Apps', style: TextStyle(color: AppColors.gray)),
-                  Text('UI/UX Design', style: TextStyle(color: AppColors.gray)),
+                  Text('Web Development', style: TextStyle(color: Colors.white70, fontSize: 13)),
+                  SizedBox(height: 6),
+                  Text('Mobile Apps', style: TextStyle(color: Colors.white70, fontSize: 13)),
+                  SizedBox(height: 6),
+                  Text('UI/UX Design', style: TextStyle(color: Colors.white70, fontSize: 13)),
+                  SizedBox(height: 6),
+                  Text('SaaS Products', style: TextStyle(color: Colors.white70, fontSize: 13)),
                 ],
               ),
               
@@ -56,23 +96,25 @@ class Footer extends StatelessWidget {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: const [
-                  Text('Contact', style: TextStyle(fontWeight: FontWeight.bold)),
+                  Text('Contact', style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white)),
                   SizedBox(height: 8),
-                  Text('hello@vertexbit.com', style: TextStyle(color: AppColors.gray)),
-                  Text('+977 98XXXXXXXX', style: TextStyle(color: AppColors.gray)),
-                  Text('Biratnagar, Nepal', style: TextStyle(color: AppColors.gray)),
+                  Text('hello@vertexbit.com', style: TextStyle(color: Colors.white70, fontSize: 13)),
+                  SizedBox(height: 6),
+                  Text('+977 98XXXXXXXX', style: TextStyle(color: Colors.white70, fontSize: 13)),
+                  SizedBox(height: 6),
+                  Text('Biratnagar, Nepal', style: TextStyle(color: Colors.white70, fontSize: 13)),
                 ],
               ),
             ],
           ),
           
           const SizedBox(height: 32),
-          const Divider(color: AppColors.gray),
+          const Divider(color: Colors.white24),
           const SizedBox(height: 16),
           
           const Text(
             '© 2025 Vertex Bit. All rights reserved.',
-            style: TextStyle(color: AppColors.gray, fontSize: 12),
+            style: TextStyle(color: Colors.white54, fontSize: 12),
           ),
         ],
       ),
