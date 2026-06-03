@@ -130,10 +130,10 @@ def mark_as_read(contact_id):
         return jsonify({'error': str(e)}), 500
 
 if __name__ == '__main__':
-    print("🚀 Vertex Bit Backend Starting...")
-    print("📍 API URL: http://localhost:5000")
+    print(" Vertex Bit Backend Starting...")
+    print(" API URL: http://localhost:5000")
     
     if init_db():
         app.run(debug=True, port=5000)
     else:
-        print("⚠️ Please fix database connection and restart")
+        print(" Please fix database connection and restart")
