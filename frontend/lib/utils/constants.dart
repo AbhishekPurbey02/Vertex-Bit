@@ -13,8 +13,13 @@ class AppColors {
 
 class AppStrings {
   static const String companyName = 'Vertex Bit';
-  static const String tagline = 'Your vision is brought to life with precision and excellence.';
-  static const String location = 'Based in Nepal — Serving Globally';
+  static const String tagline =
+      'Your vision is brought to life with precision and excellence.';
+  static const String location = 'Based in Nepal - Serving Globally';
   static const String email = 'hello@vertexbit.com';
-  static const String phone = '+977 98XXXXXXXX';
+  static const String phone = 'Available on request';
+  static const String apiBaseUrl = String.fromEnvironment(
+    'API_BASE_URL',
+    defaultValue: 'http://localhost:5000/api',
+  );
 }

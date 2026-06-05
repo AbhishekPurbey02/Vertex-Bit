@@ -67,12 +67,15 @@
     </div>
 
     <script>
-        const API_URL = 'http://localhost:5000/api';
+        const API_URL = window.location.protocol === 'file:'
+            ? 'http://localhost:5000/api'
+            : `${window.location.origin}/api`;
         
         async function loadContacts() {
             try {
                 const response = await fetch(`${API_URL}/contacts`);
-                const contacts = await response.json();
+                const payload = await response.json();
+                const contacts = payload.contacts || [];
                 
                 // Update stats
                 const unreadCount = contacts.filter(c => !c.is_read).length;
@@ -116,7 +119,11 @@
         }
         
         async function markAsRead(id) {
-            await fetch(`${API_URL}/contacts/${id}/read`, { method: 'PUT' });
+            await fetch(`${API_URL}/contacts/${id}/read`, {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ is_read: true })
+            });
             loadContacts();
         }
         

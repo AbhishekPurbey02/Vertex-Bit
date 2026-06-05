@@ -1,29 +1,48 @@
-// This is a basic Flutter widget test.
-//
-// To perform an interaction with a widget in your test, use the WidgetTester
-// utility in the flutter_test package. For example, you can send tap and scroll
-// gestures. You can also use WidgetTester to find child widgets in the widget
-// tree, read text, and verify that the values of widget properties are correct.
-
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:vertex_bit/main.dart';
 
 void main() {
-  testWidgets('Counter increments smoke test', (WidgetTester tester) async {
-    // Build our app and trigger a frame.
+  testWidgets('home page renders key sections without desktop overflow', (
+    WidgetTester tester,
+  ) async {
+    await tester.binding.setSurfaceSize(const Size(1280, 900));
     await tester.pumpWidget(const VertexBitApp());
+    await tester.pumpAndSettle();
 
-    // Verify that our counter starts at 0.
-    expect(find.text('0'), findsOneWidget);
-    expect(find.text('1'), findsNothing);
+    expect(find.text('Vertex Bit'), findsWidgets);
+    expect(find.text('Our Services'), findsWidgets);
+    expect(find.text('Web Development'), findsWidgets);
+    expect(tester.takeException(), isNull);
+  });
 
-    // Tap the '+' icon and trigger a frame.
-    await tester.tap(find.byIcon(Icons.add));
-    await tester.pump();
+  testWidgets('home page uses compact navigation on mobile', (
+    WidgetTester tester,
+  ) async {
+    await tester.binding.setSurfaceSize(const Size(390, 844));
+    await tester.pumpWidget(const VertexBitApp());
+    await tester.pumpAndSettle();
 
-    // Verify that our counter has incremented.
-    expect(find.text('0'), findsNothing);
-    expect(find.text('1'), findsOneWidget);
+    expect(find.byIcon(Icons.menu), findsOneWidget);
+    expect(tester.takeException(), isNull);
+  });
+
+  testWidgets('contact form validates required fields',
+      (WidgetTester tester) async {
+    await tester.binding.setSurfaceSize(const Size(900, 900));
+    await tester.pumpWidget(const VertexBitApp());
+    await tester.pumpAndSettle();
+
+    await tester.tap(find.text('Get in Touch').first);
+    await tester.pumpAndSettle();
+    await tester.ensureVisible(find.text('Send Message'));
+    await tester.tap(find.text('Send Message'));
+    await tester.pumpAndSettle();
+
+    expect(find.text('This field is required'), findsOneWidget);
+    expect(find.text('Email is required'), findsOneWidget);
+    expect(find.text('Phone is required'), findsOneWidget);
+    expect(find.text('Message is required'), findsOneWidget);
+    expect(tester.takeException(), isNull);
   });
 }

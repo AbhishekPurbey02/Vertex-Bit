@@ -1,9 +1,27 @@
 import 'package:flutter/material.dart';
+import '../utils/constants.dart';
+
+class NavItem {
+  final String title;
+  final int index;
+
+  const NavItem(this.title, this.index);
+}
+
+const List<NavItem> navItems = [
+  NavItem('Home', 0),
+  NavItem('About', 1),
+  NavItem('Services', 2),
+  NavItem('Products', 3),
+  NavItem('Contact', 4),
+  NavItem('FAQ', 5),
+  NavItem('Login', 6),
+];
 
 class Navbar extends StatelessWidget {
   final int selectedIndex;
-  final Function(int) onItemSelected;
-  
+  final ValueChanged<int> onItemSelected;
+
   const Navbar({
     super.key,
     required this.selectedIndex,
@@ -12,77 +30,150 @@ class Navbar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final width = MediaQuery.sizeOf(context).width;
+    final isCompact = width < 860;
+
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 16),
+      padding: EdgeInsets.symmetric(
+        horizontal: width < 600 ? 20 : 40,
+        vertical: 14,
+      ),
       color: Colors.white,
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          // Logo
-          Row(
-            children: [
-              Container(
-                width: 36,
-                height: 36,
-                decoration: BoxDecoration(
-                  color: const Color(0xFF0F2B5B),
-                  shape: BoxShape.circle,
-                ),
-                child: const Center(
-                  child: Text(
-                    'V',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 18,
-                    ),
+          const _Brand(),
+          const Spacer(),
+          if (isCompact)
+            Builder(
+              builder: (context) => IconButton(
+                tooltip: 'Open navigation',
+                icon: const Icon(Icons.menu, color: AppColors.textDark),
+                onPressed: () => Scaffold.of(context).openEndDrawer(),
+              ),
+            )
+          else
+            Wrap(
+              spacing: 24,
+              runSpacing: 12,
+              children: [
+                for (final item in navItems)
+                  _NavLink(
+                    item: item,
+                    isSelected: selectedIndex == item.index,
+                    onTap: () => onItemSelected(item.index),
                   ),
-                ),
-              ),
-              const SizedBox(width: 8),
-              const Text(
-                'Vertex Bit',
-                style: TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
-                  color: Color(0xFF1A1A1A),
-                  letterSpacing: 1,
-                ),
-              ),
-            ],
-          ),
-          
-          // Nav Links
-          Row(
-            children: [
-              _buildNavLink('Home', 0),
-              const SizedBox(width: 24),
-              _buildNavLink('About', 1),
-              const SizedBox(width: 24),
-              _buildNavLink('Services', 2),
-              const SizedBox(width: 24),
-              _buildNavLink('Products', 3),
-              const SizedBox(width: 24),
-              _buildNavLink('Contact', 4),
-              const SizedBox(width: 24),
-              _buildNavLink('FAQ', 5),
-              const SizedBox(width: 24),
-              _buildNavLink('Login', 6),
-            ],
-          ),
+              ],
+            ),
         ],
       ),
     );
   }
-  
-  Widget _buildNavLink(String title, int index) {
-    final isSelected = selectedIndex == index;
-    return GestureDetector(
-      onTap: () => onItemSelected(index),
+}
+
+class NavDrawer extends StatelessWidget {
+  final int selectedIndex;
+  final ValueChanged<int> onItemSelected;
+
+  const NavDrawer({
+    super.key,
+    required this.selectedIndex,
+    required this.onItemSelected,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Drawer(
+      backgroundColor: Colors.white,
+      child: SafeArea(
+        child: Column(
+          children: [
+            const Padding(
+              padding: EdgeInsets.all(20),
+              child: _Brand(),
+            ),
+            const Divider(height: 1),
+            for (final item in navItems)
+              ListTile(
+                selected: selectedIndex == item.index,
+                selectedColor: AppColors.primary,
+                title: Text(item.title),
+                onTap: () {
+                  Navigator.of(context).pop();
+                  onItemSelected(item.index);
+                },
+              ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class _Brand extends StatelessWidget {
+  const _Brand();
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Container(
+          width: 36,
+          height: 36,
+          decoration: const BoxDecoration(
+            color: AppColors.primary,
+            shape: BoxShape.circle,
+          ),
+          child: const Center(
+            child: Text(
+              'V',
+              style: TextStyle(
+                color: Colors.white,
+                fontWeight: FontWeight.bold,
+                fontSize: 18,
+              ),
+            ),
+          ),
+        ),
+        const SizedBox(width: 8),
+        const Text(
+          AppStrings.companyName,
+          style: TextStyle(
+            fontSize: 20,
+            fontWeight: FontWeight.bold,
+            color: AppColors.textDark,
+            letterSpacing: 1,
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+class _NavLink extends StatelessWidget {
+  final NavItem item;
+  final bool isSelected;
+  final VoidCallback onTap;
+
+  const _NavLink({
+    required this.item,
+    required this.isSelected,
+    required this.onTap,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return TextButton(
+      onPressed: onTap,
+      style: TextButton.styleFrom(
+        foregroundColor: isSelected ? AppColors.primary : AppColors.textGray,
+        padding: EdgeInsets.zero,
+        minimumSize: const Size(44, 36),
+        tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+      ),
       child: Text(
-        title,
+        item.title,
         style: TextStyle(
-          color: isSelected ? const Color(0xFF0F2B5B) : const Color(0xFF666666),
           fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
           fontSize: 14,
         ),

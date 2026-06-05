@@ -1,11 +1,11 @@
 {
-    "name": "frontend",
-    "short_name": "frontend",
+    "name": "Vertex Bit",
+    "short_name": "Vertex Bit",
     "start_url": ".",
     "display": "standalone",
-    "background_color": "#0175C2",
-    "theme_color": "#0175C2",
-    "description": "A new Flutter project.",
+    "background_color": "#0F2B5B",
+    "theme_color": "#0F2B5B",
+    "description": "Vertex Bit - IT solutions for websites, apps, dashboards, and software delivery.",
     "orientation": "portrait-primary",
     "prefer_related_applications": false,
     "icons": [
