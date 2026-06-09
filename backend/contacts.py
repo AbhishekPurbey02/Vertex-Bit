@@ -110,8 +110,12 @@ def submit_contact():
             ),
             201,
         )
-    except Exception:
-        return jsonify({"error": "Unable to save contact submission."}), 500
+    except Exception as e:
+        print("=" * 50)
+        print("DATABASE ERROR:")
+        print(e)
+        print("=" * 50)
+        return jsonify({"error": str(e)}), 500
 
 
 @contacts_bp.get("/contacts")

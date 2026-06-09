@@ -14,9 +14,8 @@ def create_app():
     app.config["MAX_CONTENT_LENGTH"] = Config.MAX_CONTENT_LENGTH
 
     CORS(
-        app,
-        resources={r"/api/*": {"origins": Config.CORS_ORIGINS}},
-        supports_credentials=True,
+    app,
+    resources={r"/api/*": {"origins": "*"}},
     )
 
     app.register_blueprint(contacts_bp)
