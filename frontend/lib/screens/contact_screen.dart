@@ -76,10 +76,14 @@ class _ContactScreenState extends State<ContactScreen> {
           _errorMessage = 'Your message could not be sent. Please try again.';
         });
       }
-    } catch (_) {
+    } catch (e, stackTrace) {
+      print("ERROR: $e");
+      print("STACK: $stackTrace");
+
       if (!mounted) return;
+
       setState(() {
-        _errorMessage = 'Connection error. Please try again later.';
+        _errorMessage = e.toString();
       });
     } finally {
       if (mounted) {
