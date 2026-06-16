@@ -196,7 +196,7 @@ class _TrustSection extends StatelessWidget {
               width: width < 700 ? double.infinity : 260,
               child: Column(
                 children: [
-                  Text(
+                  Text( 
                     item.title,
                     textAlign: TextAlign.center,
                     style: const TextStyle(
