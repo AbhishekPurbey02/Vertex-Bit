@@ -89,78 +89,150 @@ class _HeroSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final width = MediaQuery.sizeOf(context).width;
-    final isMobile = width < 700;
+    final width = MediaQuery.of(context).size.width;
+    final bool isMobile = width < 900;
 
     return Container(
       width: double.infinity,
-      padding: EdgeInsets.symmetric(
-        horizontal: isMobile ? 24 : 40,
-        vertical: isMobile ? 56 : 80,
+      decoration: const BoxDecoration(
+        gradient: LinearGradient(
+          colors: [
+            Color.fromARGB(255, 31, 83, 195),
+            Color(0xFF0F2B5B),
+          ],
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+        ),
       ),
-      color: Colors.white,
-      child: Column(
-        children: [
-          ConstrainedBox(
-            constraints: const BoxConstraints(maxWidth: 920),
-            child: Text(
-              AppStrings.tagline,
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                fontSize: isMobile ? 34 : 48,
-                fontWeight: FontWeight.bold,
-                color: AppColors.textDark,
-                height: 1.18,
+      padding: EdgeInsets.symmetric(
+        horizontal: isMobile ? 24 : 80,
+        vertical: 70,
+      ),
+      child: Center(
+        child: ConstrainedBox(
+          constraints: const BoxConstraints(maxWidth: 1400),
+          child: isMobile
+              ? Column(
+                  children: [
+                    _heroContent(context, true),
+                    const SizedBox(height: 40),
+                    _heroImage(),
+                  ],
+                )
+              : Row(
+                  children: [
+                    Expanded(
+                      flex: 5,
+                      child: _heroContent(context, false),
+                    ),
+                    const SizedBox(width: 60),
+                    Expanded(
+                      flex: 4,
+                      child: _heroImage(),
+                    ),
+                  ],
+                ),
+        ),
+      ),
+    );
+  }
+
+  Widget _heroContent(BuildContext context, bool isMobile) {
+    return Column(
+      crossAxisAlignment:
+          isMobile ? CrossAxisAlignment.center : CrossAxisAlignment.start,
+      children: [
+        Text(
+          "Transforming Ideas into\nIntelligent Digital Solutions",
+          textAlign: isMobile ? TextAlign.center : TextAlign.left,
+          style: TextStyle(
+            color: Colors.white,
+            fontSize: isMobile ? 40 : 60,
+            fontWeight: FontWeight.bold,
+            height: 1.15,
+          ),
+        ),
+
+        const SizedBox(height: 24),
+
+        Text(
+          "Vertex Bit helps startups and businesses build AI-powered "
+          "applications, modern websites, mobile apps, dashboards and "
+          "enterprise software that accelerate digital transformation.",
+          textAlign: isMobile ? TextAlign.center : TextAlign.left,
+          style: TextStyle(
+            color: Colors.white.withOpacity(0.9),
+            fontSize: isMobile ? 18 : 22,
+            height: 1.7,
+          ),
+        ),
+
+        const SizedBox(height: 40),
+
+        Wrap(
+          spacing: 20,
+          runSpacing: 15,
+          children: [
+            ElevatedButton(
+              onPressed: () {
+                Navigator.pushNamed(context, "/contact");
+              },
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.white,
+                foregroundColor: AppColors.primary,
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 34,
+                  vertical: 20,
+                ),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12),
+                ),
+              ),
+              child: const Text(
+                "Get In Touch",
+                style: TextStyle(
+                  fontSize: 17,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
             ),
-          ),
-          const SizedBox(height: 24),
-          const Text(
-            AppStrings.location,
-            textAlign: TextAlign.center,
-            style: TextStyle(fontSize: 18, color: AppColors.textGray),
-          ),
-          const SizedBox(height: 32),
-          Wrap(
-            alignment: WrapAlignment.center,
-            spacing: 16,
-            runSpacing: 12,
-            children: [
-              ElevatedButton.icon(
-                onPressed: () => Navigator.pushNamed(context, '/contact'),
-                icon: const Icon(Icons.mail_outline),
-                label: const Text('Get in Touch'),
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: AppColors.primary,
-                  foregroundColor: Colors.white,
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 28, vertical: 16),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(8),
-                  ),
+
+            OutlinedButton(
+              onPressed: () {},
+              style: OutlinedButton.styleFrom(
+                foregroundColor: Colors.white,
+                side: const BorderSide(
+                  color: Colors.white,
+                  width: 2,
+                ),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 34,
+                  vertical: 20,
+                ),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12),
                 ),
               ),
-              OutlinedButton.icon(
-                onPressed: () {
-                  final state =
-                      context.findAncestorStateOfType<_HomeScreenState>();
-                  state?._onItemSelected(2);
-                },
-                icon: const Icon(Icons.design_services_outlined),
-                label: const Text('Our Services'),
-                style: OutlinedButton.styleFrom(
-                  foregroundColor: AppColors.primary,
-                  side: const BorderSide(color: AppColors.primary),
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 28, vertical: 16),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(8),
-                  ),
+              child: const Text(
+                "Our Services",
+                style: TextStyle(
+                  fontSize: 17,
+                  fontWeight: FontWeight.bold,
                 ),
               ),
-            ],
-          ),
-        ],
+            ),
+          ],
+        ),
+      ],
+    );
+  }
+
+  Widget _heroImage() {
+    return ClipRRect(
+      borderRadius: BorderRadius.circular(18),
+      child: Image.asset(
+        "assets/images/hero_team.jpg",
+        fit: BoxFit.cover,
       ),
     );
   }
