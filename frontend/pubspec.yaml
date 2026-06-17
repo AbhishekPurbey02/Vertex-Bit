@@ -20,6 +20,9 @@ dev_dependencies:
 
 flutter:
   uses-material-design: true
+# Add your assets folder directory here
+  assets:
+    - assets/images/
   
   # fonts:
   #   - family: Poppins
