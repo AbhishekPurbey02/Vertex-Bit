@@ -15,7 +15,6 @@ const List<NavItem> navItems = [
   NavItem('Products', 3),
   NavItem('Contact', 4),
   NavItem('FAQ', 5),
-  NavItem('Login', 6),
 ];
 
 class Navbar extends StatelessWidget {
@@ -52,18 +51,47 @@ class Navbar extends StatelessWidget {
               ),
             )
           else
-            Wrap(
-              spacing: 24,
-              runSpacing: 12,
-              children: [
-                for (final item in navItems)
-                  _NavLink(
-                    item: item,
-                    isSelected: selectedIndex == item.index,
-                    onTap: () => onItemSelected(item.index),
-                  ),
-              ],
-            ),
+            Row(
+  mainAxisSize: MainAxisSize.min,
+  children: [
+    for (final item in navItems)
+      Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 14),
+        child: _NavLink(
+          item: item,
+          isSelected: selectedIndex == item.index,
+          onTap: () => onItemSelected(item.index),
+        ),
+      ),
+
+    const SizedBox(width: 18),
+
+    ElevatedButton(
+      onPressed: () {
+        onItemSelected(6);
+      },
+      style: ElevatedButton.styleFrom(
+        backgroundColor: AppColors.accent,
+        foregroundColor: Colors.white,
+        elevation: 0,
+        padding: const EdgeInsets.symmetric(
+          horizontal: 26,
+          vertical: 18,
+        ),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(30),
+        ),
+      ),
+      child: const Text(
+        "Login",
+        style: TextStyle(
+          fontWeight: FontWeight.bold,
+          fontSize: 15,
+        ),
+      ),
+    ),
+  ],
+),
         ],
       ),
     );
@@ -137,20 +165,20 @@ class _Brand extends StatelessWidget {
         ),
         const SizedBox(width: 8),
         const Text(
-          AppStrings.companyName,
-          style: TextStyle(
-            fontSize: 20,
-            fontWeight: FontWeight.bold,
-            color: AppColors.textDark,
-            letterSpacing: 1,
-          ),
-        ),
+  AppStrings.companyName,
+  style: TextStyle(
+    fontSize: 20,
+    fontWeight: FontWeight.bold,
+    color: Colors.white,
+    letterSpacing: 1,
+  ),
+),
       ],
     );
   }
 }
 
-class _NavLink extends StatelessWidget {
+class _NavLink extends StatefulWidget {
   final NavItem item;
   final bool isSelected;
   final VoidCallback onTap;
@@ -162,20 +190,55 @@ class _NavLink extends StatelessWidget {
   });
 
   @override
+  State<_NavLink> createState() => _NavLinkState();
+}
+
+class _NavLinkState extends State<_NavLink> {
+  bool hovering = false;
+
+  @override
   Widget build(BuildContext context) {
-    return TextButton(
-      onPressed: onTap,
-      style: TextButton.styleFrom(
-        foregroundColor: isSelected ? AppColors.primary : AppColors.textGray,
-        padding: EdgeInsets.zero,
-        minimumSize: const Size(44, 36),
-        tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-      ),
-      child: Text(
-        item.title,
-        style: TextStyle(
-          fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
-          fontSize: 14,
+    final active = hovering || widget.isSelected;
+
+    return MouseRegion(
+      onEnter: (_) {
+        setState(() {
+          hovering = true;
+        });
+      },
+      onExit: (_) {
+        setState(() {
+          hovering = false;
+        });
+      },
+      child: GestureDetector(
+        onTap: widget.onTap,
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Text(
+              widget.item.title,
+              style: TextStyle(
+                color: Colors.white,
+                fontWeight:
+                    active ? FontWeight.bold : FontWeight.w500,
+                fontSize: 16,
+              ),
+            ),
+
+            const SizedBox(height: 6),
+
+            AnimatedContainer(
+              duration: const Duration(milliseconds: 250),
+              curve: Curves.easeInOut,
+              width: active ? 42 : 0,
+              height: 3,
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(20),
+              ),
+            ),
+          ],
         ),
       ),
     );
