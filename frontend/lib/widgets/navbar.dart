@@ -15,6 +15,7 @@ const List<NavItem> navItems = [
   NavItem('Products', 3),
   NavItem('Contact', 4),
   NavItem('FAQ', 5),
+  NavItem('Login', 6),
 ];
 
 class Navbar extends StatelessWidget {
