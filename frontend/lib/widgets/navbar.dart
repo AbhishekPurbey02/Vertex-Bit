@@ -37,7 +37,7 @@ class Navbar extends StatelessWidget {
         horizontal: width < 600 ? 20 : 40,
         vertical: 14,
       ),
-      color: Colors.white, // White background
+      color: AppColors.primary, // White background
       child: Row(
         children: [
           const _Brand(),
@@ -150,14 +150,14 @@ class _Brand extends StatelessWidget {
           width: 36,
           height: 36,
           decoration: const BoxDecoration(
-            color: AppColors.primary, // Dark blue/teal circle
+            color: Colors.white, // Dark blue/teal circle
             shape: BoxShape.circle,
           ),
           child: const Center(
             child: Text(
-              'V',
+              'Vb',
               style: TextStyle(
-                color: Colors.white,
+                color: AppColors.textDark,
                 fontWeight: FontWeight.bold,
                 fontSize: 18,
               ),
@@ -170,7 +170,7 @@ class _Brand extends StatelessWidget {
           style: TextStyle(
             fontSize: 20,
             fontWeight: FontWeight.bold,
-            color: AppColors.textDark, // DARK text for light background
+            color: Colors.white, // DARK text for light background
             letterSpacing: 1,
           ),
         ),
