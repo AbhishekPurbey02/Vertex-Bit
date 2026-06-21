@@ -38,7 +38,7 @@ class Navbar extends StatelessWidget {
         horizontal: width < 600 ? 20 : 40,
         vertical: 14,
       ),
-      color: Colors.white,
+      color: Colors.white, // White background
       child: Row(
         children: [
           const _Brand(),
@@ -118,12 +118,15 @@ class NavDrawer extends StatelessWidget {
               padding: EdgeInsets.all(20),
               child: _Brand(),
             ),
-            const Divider(height: 1),
+            const Divider(height: 1, color: Colors.white54),
             for (final item in navItems)
               ListTile(
                 selected: selectedIndex == item.index,
-                selectedColor: AppColors.primary,
-                title: Text(item.title),
+                selectedColor: Colors.white,
+                title: Text(
+                  item.title,
+                  style: const TextStyle(color: Colors.white),
+                ),
                 onTap: () {
                   Navigator.of(context).pop();
                   onItemSelected(item.index);
@@ -148,7 +151,7 @@ class _Brand extends StatelessWidget {
           width: 36,
           height: 36,
           decoration: const BoxDecoration(
-            color: AppColors.primary,
+            color: AppColors.primary, // Dark blue/teal circle
             shape: BoxShape.circle,
           ),
           child: const Center(
@@ -164,11 +167,11 @@ class _Brand extends StatelessWidget {
         ),
         const SizedBox(width: 8),
         const Text(
-          AppStrings.companyName,
+          'Vertex Bit', // Changed to match your brand name
           style: TextStyle(
             fontSize: 20,
             fontWeight: FontWeight.bold,
-            color: Colors.white,
+            color: AppColors.textDark, // DARK text for light background
             letterSpacing: 1,
           ),
         ),
@@ -218,7 +221,7 @@ class _NavLinkState extends State<_NavLink> {
             Text(
               widget.item.title,
               style: TextStyle(
-                color: Colors.white,
+                color: AppColors.textDark, // DARK text for light background
                 fontWeight: active ? FontWeight.bold : FontWeight.w500,
                 fontSize: 16,
               ),
@@ -230,7 +233,7 @@ class _NavLinkState extends State<_NavLink> {
               width: active ? 42 : 0,
               height: 3,
               decoration: BoxDecoration(
-                color: Colors.white,
+                color: AppColors.primary, // DARK underline for light background
                 borderRadius: BorderRadius.circular(20),
               ),
             ),
