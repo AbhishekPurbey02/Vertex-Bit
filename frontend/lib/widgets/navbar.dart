@@ -220,7 +220,7 @@ class _NavLinkState extends State<_NavLink> {
             Text(
               widget.item.title,
               style: TextStyle(
-                color: AppColors.textDark, // DARK text for light background
+                color: Colors.white, // DARK text for light background
                 fontWeight: active ? FontWeight.bold : FontWeight.w500,
                 fontSize: 16,
               ),
@@ -232,7 +232,7 @@ class _NavLinkState extends State<_NavLink> {
               width: active ? 42 : 0,
               height: 3,
               decoration: BoxDecoration(
-                color: AppColors.primary, // DARK underline for light background
+                color: Colors.white, // DARK underline for light background
                 borderRadius: BorderRadius.circular(20),
               ),
             ),
