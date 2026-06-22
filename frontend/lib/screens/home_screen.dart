@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:vertex_bit/widgets/services_section.dart';
 import '../utils/constants.dart';
 import '../widgets/footer.dart';
 import '../widgets/navbar.dart';
@@ -72,7 +73,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 children: [
                   const _HeroSection(),
                   const _TrustSection(),
-                  _ServicesSection(key: _servicesKey),
+                  ServicesSection(key: _servicesKey),
                   const Footer(),
                 ],
               ),
