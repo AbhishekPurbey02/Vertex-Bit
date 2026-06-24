@@ -10,17 +10,18 @@ class TeamSection extends StatefulWidget {
 
 class _TeamSectionState extends State<TeamSection> {
   int _hoveredIndex = -1;
-  int _selectedMember = -1;
   final ScrollController _scrollController = ScrollController();
   bool _showLeftArrow = false;
   bool _showRightArrow = true;
+  int _currentIndicatorIndex = 0;
 
   final List<TeamMember> teamMembers = [
     TeamMember(
       name: 'Er. Saroj Ojha',
       position: 'Chief Technology Officer',
       subtitle: '(CTO)',
-      bio: 'Er. Saroj Ojha is the Chief Technology Officer at Vertex Bit with over 10 years of experience in software architecture and cloud solutions. He leads the technology strategy and innovation initiatives.',
+      bio:
+          'Er. Saroj Ojha is the Chief Technology Officer at Vertex Bit with over 10 years of experience in software architecture and cloud solutions. He leads the technology strategy and innovation initiatives.',
       socialLinks: {
         'Facebook': 'https://facebook.com/sarojojha',
         'LinkedIn': 'https://linkedin.com/in/sarojojha',
@@ -31,7 +32,8 @@ class _TeamSectionState extends State<TeamSection> {
       name: 'Er. Chandra Prasad Acharya',
       position: 'Managing Director',
       subtitle: 'Senior Dotnet Developer',
-      bio: 'Er. Chandra Prasad Acharya is the Managing Director and Senior Dotnet Developer at Vertex Bit. With 12+ years of experience, he specializes in enterprise applications and team leadership.',
+      bio:
+          'Er. Chandra Prasad Acharya is the Managing Director and Senior Dotnet Developer at Vertex Bit. With 12+ years of experience, he specializes in enterprise applications and team leadership.',
       socialLinks: {
         'Facebook': 'https://facebook.com/chandraacharya',
         'LinkedIn': 'https://linkedin.com/in/chandraacharya',
@@ -39,17 +41,17 @@ class _TeamSectionState extends State<TeamSection> {
       },
     ),
     // Add more members here to test horizontal scrolling
-    // TeamMember(
-    //   name: 'Er. Ram Sharma',
-    //   position: 'Senior Developer',
-    //   subtitle: 'Full Stack Expert',
-    //   bio: 'Er. Ram Sharma is a Senior Developer with 8 years of experience...',
-    //   socialLinks: {
-    //     'Facebook': 'https://facebook.com/ramsharma',
-    //     'LinkedIn': 'https://linkedin.com/in/ramsharma',
-    //     'Instagram': 'https://instagram.com/ramsharma',
-    //   },
-    // ),
+    TeamMember(
+      name: 'Er. Ram Sharma',
+      position: 'Senior Developer',
+      subtitle: 'Full Stack Expert',
+      bio: 'Er. Ram Sharma is a Senior Developer with 8 years of experience...',
+      socialLinks: {
+        'Facebook': 'https://facebook.com/ramsharma',
+        'LinkedIn': 'https://linkedin.com/in/ramsharma',
+        'Instagram': 'https://instagram.com/ramsharma',
+      },
+    ),
   ];
 
   @override
@@ -66,29 +68,43 @@ class _TeamSectionState extends State<TeamSection> {
   }
 
   void _updateArrows() {
-    setState(() {
-      if (_scrollController.hasClients) {
+    if (_scrollController.hasClients) {
+      setState(() {
         _showLeftArrow = _scrollController.offset > 0;
         _showRightArrow = _scrollController.offset <
             _scrollController.position.maxScrollExtent - 10;
-      }
-    });
+
+        // Update indicator index
+        final double cardWidth = 380 + 24; // Card width + spacing
+        _currentIndicatorIndex = (_scrollController.offset / cardWidth).round();
+        if (_currentIndicatorIndex >= teamMembers.length) {
+          _currentIndicatorIndex = teamMembers.length - 1;
+        }
+        if (_currentIndicatorIndex < 0) {
+          _currentIndicatorIndex = 0;
+        }
+      });
+    }
   }
 
   void _scrollLeft() {
-    _scrollController.animateTo(
-      _scrollController.offset - 320,
-      duration: const Duration(milliseconds: 400),
-      curve: Curves.easeInOut,
-    );
+    if (_scrollController.hasClients) {
+      _scrollController.animateTo(
+        _scrollController.offset - 320,
+        duration: const Duration(milliseconds: 400),
+        curve: Curves.easeInOut,
+      );
+    }
   }
 
   void _scrollRight() {
-    _scrollController.animateTo(
-      _scrollController.offset + 320,
-      duration: const Duration(milliseconds: 400),
-      curve: Curves.easeInOut,
-    );
+    if (_scrollController.hasClients) {
+      _scrollController.animateTo(
+        _scrollController.offset + 320,
+        duration: const Duration(milliseconds: 400),
+        curve: Curves.easeInOut,
+      );
+    }
   }
 
   @override
@@ -114,19 +130,19 @@ class _TeamSectionState extends State<TeamSection> {
               Stack(
                 children: [
                   // Scrollable area
-                  Container(
+                  SizedBox(
                     height: 480,
                     child: SingleChildScrollView(
                       controller: _scrollController,
                       scrollDirection: Axis.horizontal,
+                      physics: const BouncingScrollPhysics(),
                       child: Row(
                         children: teamMembers.asMap().entries.map((entry) {
                           return Container(
                             width: isMobile ? 320 : 380,
                             padding: EdgeInsets.only(
-                              right: entry.key == teamMembers.length - 1
-                                  ? 0
-                                  : 24,
+                              right:
+                                  entry.key == teamMembers.length - 1 ? 0 : 24,
                             ),
                             child: _buildTeamCard(
                               index: entry.key,
@@ -138,7 +154,7 @@ class _TeamSectionState extends State<TeamSection> {
                       ),
                     ),
                   ),
-                  // Left arrow button (shown only when scrollable)
+                  // Left arrow button
                   if (!isMobile && _showLeftArrow)
                     Positioned(
                       left: 0,
@@ -147,10 +163,9 @@ class _TeamSectionState extends State<TeamSection> {
                       child: _buildArrowButton(
                         icon: Icons.arrow_back_ios,
                         onPressed: _scrollLeft,
-                        isLeft: true,
                       ),
                     ),
-                  // Right arrow button (shown only when scrollable)
+                  // Right arrow button
                   if (!isMobile && _showRightArrow)
                     Positioned(
                       right: 0,
@@ -159,7 +174,6 @@ class _TeamSectionState extends State<TeamSection> {
                       child: _buildArrowButton(
                         icon: Icons.arrow_forward_ios,
                         onPressed: _scrollRight,
-                        isLeft: false,
                       ),
                     ),
                 ],
@@ -211,36 +225,29 @@ class _TeamSectionState extends State<TeamSection> {
   Widget _buildArrowButton({
     required IconData icon,
     required VoidCallback onPressed,
-    required bool isLeft,
   }) {
-    return MouseRegion(
-      child: AnimatedContainer(
-        duration: const Duration(milliseconds: 200),
-        width: 50,
-        height: 50,
-        decoration: BoxDecoration(
-          color: Colors.white,
-          shape: BoxShape.circle,
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black.withOpacity(0.1),
-              blurRadius: 10,
-              spreadRadius: 2,
-            ),
-          ],
-        ),
-        child: Center(
-          child: IconButton(
-            onPressed: onPressed,
-            icon: Icon(
-              icon,
-              color: AppColors.primary,
-              size: 20,
-            ),
-            padding: EdgeInsets.zero,
-            constraints: const BoxConstraints(),
+    return Container(
+      margin: const EdgeInsets.all(8),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        shape: BoxShape.circle,
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.15),
+            blurRadius: 15,
+            spreadRadius: 2,
           ),
+        ],
+      ),
+      child: IconButton(
+        onPressed: onPressed,
+        icon: Icon(
+          icon,
+          color: AppColors.primary,
+          size: 20,
         ),
+        padding: const EdgeInsets.all(12),
+        constraints: const BoxConstraints(),
       ),
     );
   }
@@ -251,28 +258,18 @@ class _TeamSectionState extends State<TeamSection> {
       children: List.generate(
         teamMembers.length,
         (index) => Container(
-          margin: const EdgeInsets.symmetric(horizontal: 4),
+          margin: const EdgeInsets.symmetric(horizontal: 6),
           width: 10,
           height: 10,
           decoration: BoxDecoration(
             shape: BoxShape.circle,
-            color: _getIndicatorColor(index),
+            color: _currentIndicatorIndex == index
+                ? AppColors.primary
+                : AppColors.textGray.withOpacity(0.3),
           ),
         ),
       ),
     );
-  }
-
-  Color _getIndicatorColor(int index) {
-    if (_scrollController.hasClients) {
-      final double offset = _scrollController.offset;
-      final double cardWidth = 380 + 24; // Card width + spacing
-      final int currentIndex = (offset / cardWidth).round();
-      if (index == currentIndex) {
-        return AppColors.primary;
-      }
-    }
-    return AppColors.textGray.withOpacity(0.3);
   }
 
   Widget _buildTeamCard({
@@ -473,7 +470,7 @@ class _TeamSectionState extends State<TeamSection> {
                   ),
                 ),
                 const SizedBox(height: 24),
-                
+
                 // Social links
                 const Text(
                   'Connect With Me',
@@ -497,7 +494,7 @@ class _TeamSectionState extends State<TeamSection> {
                 const SizedBox(height: 24),
                 const Divider(),
                 const SizedBox(height: 16),
-                
+
                 // Bio
                 Text(
                   member.bio,
@@ -508,7 +505,7 @@ class _TeamSectionState extends State<TeamSection> {
                   ),
                 ),
                 const SizedBox(height: 20),
-                
+
                 // Member info
                 Container(
                   padding: const EdgeInsets.all(16),
@@ -616,8 +613,6 @@ class _SocialIconButtonState extends State<_SocialIconButton> {
               behavior: SnackBarBehavior.floating,
             ),
           );
-          // You can use url_launcher package to open actual URLs
-          // launchUrl(Uri.parse(widget.url));
         },
         child: AnimatedContainer(
           duration: const Duration(milliseconds: 200),
