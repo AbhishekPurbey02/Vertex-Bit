@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:vertex_bit/widgets/about_section.dart';
 import 'package:vertex_bit/widgets/products_section.dart';
 import 'package:vertex_bit/widgets/services_section.dart';
+import 'package:vertex_bit/widgets/team_section.dart';
 import '../utils/constants.dart';
 import '../widgets/footer.dart';
 import '../widgets/navbar.dart';
@@ -17,6 +18,7 @@ class _HomeScreenState extends State<HomeScreen> {
   final _servicesKey = GlobalKey();
   final _aboutKey = GlobalKey();
   final _productsKey = GlobalKey();
+  final _teamKey = GlobalKey();
   int _currentIndex = 0;
 
   void _onItemSelected(int index) {
@@ -80,6 +82,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   const _TrustSection(),
                   ServicesSection(key: _servicesKey),
                   ProductsSection(key: _productsKey),
+                  TeamSection(key: _teamKey),
                   const Footer(),
                 ],
               ),
