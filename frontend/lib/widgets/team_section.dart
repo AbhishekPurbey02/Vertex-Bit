@@ -11,6 +11,9 @@ class TeamSection extends StatefulWidget {
 class _TeamSectionState extends State<TeamSection> {
   int _hoveredIndex = -1;
   int _selectedMember = -1;
+  final ScrollController _scrollController = ScrollController();
+  bool _showLeftArrow = false;
+  bool _showRightArrow = true;
 
   final List<TeamMember> teamMembers = [
     TeamMember(
@@ -35,7 +38,58 @@ class _TeamSectionState extends State<TeamSection> {
         'Instagram': 'https://instagram.com/chandraacharya',
       },
     ),
+    // Add more members here to test horizontal scrolling
+    // TeamMember(
+    //   name: 'Er. Ram Sharma',
+    //   position: 'Senior Developer',
+    //   subtitle: 'Full Stack Expert',
+    //   bio: 'Er. Ram Sharma is a Senior Developer with 8 years of experience...',
+    //   socialLinks: {
+    //     'Facebook': 'https://facebook.com/ramsharma',
+    //     'LinkedIn': 'https://linkedin.com/in/ramsharma',
+    //     'Instagram': 'https://instagram.com/ramsharma',
+    //   },
+    // ),
   ];
+
+  @override
+  void initState() {
+    super.initState();
+    _scrollController.addListener(_updateArrows);
+  }
+
+  @override
+  void dispose() {
+    _scrollController.removeListener(_updateArrows);
+    _scrollController.dispose();
+    super.dispose();
+  }
+
+  void _updateArrows() {
+    setState(() {
+      if (_scrollController.hasClients) {
+        _showLeftArrow = _scrollController.offset > 0;
+        _showRightArrow = _scrollController.offset <
+            _scrollController.position.maxScrollExtent - 10;
+      }
+    });
+  }
+
+  void _scrollLeft() {
+    _scrollController.animateTo(
+      _scrollController.offset - 320,
+      duration: const Duration(milliseconds: 400),
+      curve: Curves.easeInOut,
+    );
+  }
+
+  void _scrollRight() {
+    _scrollController.animateTo(
+      _scrollController.offset + 320,
+      duration: const Duration(milliseconds: 400),
+      curve: Curves.easeInOut,
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -56,35 +110,63 @@ class _TeamSectionState extends State<TeamSection> {
             children: [
               _buildHeader(isMobile),
               const SizedBox(height: 50),
-              isMobile
-                  ? Column(
-                      children: teamMembers.asMap().entries.map((entry) {
-                        return Padding(
-                          padding: const EdgeInsets.only(bottom: 24),
-                          child: _buildTeamCard(
-                            index: entry.key,
-                            member: entry.value,
-                            isMobile: true,
-                          ),
-                        );
-                      }).toList(),
-                    )
-                  : Row(
-                      children: teamMembers.asMap().entries.map((entry) {
-                        return Expanded(
-                          child: Padding(
+              // Horizontal scrollable team cards
+              Stack(
+                children: [
+                  // Scrollable area
+                  Container(
+                    height: 480,
+                    child: SingleChildScrollView(
+                      controller: _scrollController,
+                      scrollDirection: Axis.horizontal,
+                      child: Row(
+                        children: teamMembers.asMap().entries.map((entry) {
+                          return Container(
+                            width: isMobile ? 320 : 380,
                             padding: EdgeInsets.only(
-                              right: entry.key == 0 ? 30 : 0,
+                              right: entry.key == teamMembers.length - 1
+                                  ? 0
+                                  : 24,
                             ),
                             child: _buildTeamCard(
                               index: entry.key,
                               member: entry.value,
-                              isMobile: false,
+                              isMobile: isMobile,
                             ),
-                          ),
-                        );
-                      }).toList(),
+                          );
+                        }).toList(),
+                      ),
                     ),
+                  ),
+                  // Left arrow button (shown only when scrollable)
+                  if (!isMobile && _showLeftArrow)
+                    Positioned(
+                      left: 0,
+                      top: 0,
+                      bottom: 0,
+                      child: _buildArrowButton(
+                        icon: Icons.arrow_back_ios,
+                        onPressed: _scrollLeft,
+                        isLeft: true,
+                      ),
+                    ),
+                  // Right arrow button (shown only when scrollable)
+                  if (!isMobile && _showRightArrow)
+                    Positioned(
+                      right: 0,
+                      top: 0,
+                      bottom: 0,
+                      child: _buildArrowButton(
+                        icon: Icons.arrow_forward_ios,
+                        onPressed: _scrollRight,
+                        isLeft: false,
+                      ),
+                    ),
+                ],
+              ),
+              const SizedBox(height: 30),
+              // Scroll indicators (dots)
+              _buildScrollIndicators(),
             ],
           ),
         ),
@@ -124,6 +206,73 @@ class _TeamSectionState extends State<TeamSection> {
         ),
       ],
     );
+  }
+
+  Widget _buildArrowButton({
+    required IconData icon,
+    required VoidCallback onPressed,
+    required bool isLeft,
+  }) {
+    return MouseRegion(
+      child: AnimatedContainer(
+        duration: const Duration(milliseconds: 200),
+        width: 50,
+        height: 50,
+        decoration: BoxDecoration(
+          color: Colors.white,
+          shape: BoxShape.circle,
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.1),
+              blurRadius: 10,
+              spreadRadius: 2,
+            ),
+          ],
+        ),
+        child: Center(
+          child: IconButton(
+            onPressed: onPressed,
+            icon: Icon(
+              icon,
+              color: AppColors.primary,
+              size: 20,
+            ),
+            padding: EdgeInsets.zero,
+            constraints: const BoxConstraints(),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildScrollIndicators() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: List.generate(
+        teamMembers.length,
+        (index) => Container(
+          margin: const EdgeInsets.symmetric(horizontal: 4),
+          width: 10,
+          height: 10,
+          decoration: BoxDecoration(
+            shape: BoxShape.circle,
+            color: _getIndicatorColor(index),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Color _getIndicatorColor(int index) {
+    if (_scrollController.hasClients) {
+      final double offset = _scrollController.offset;
+      final double cardWidth = 380 + 24; // Card width + spacing
+      final int currentIndex = (offset / cardWidth).round();
+      if (index == currentIndex) {
+        return AppColors.primary;
+      }
+    }
+    return AppColors.textGray.withOpacity(0.3);
   }
 
   Widget _buildTeamCard({
@@ -461,7 +610,6 @@ class _SocialIconButtonState extends State<_SocialIconButton> {
       },
       child: GestureDetector(
         onTap: () {
-          // Open URL
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
               content: Text('Opening ${widget.label}...'),
