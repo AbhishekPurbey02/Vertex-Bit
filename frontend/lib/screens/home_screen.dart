@@ -4,6 +4,7 @@ import 'package:vertex_bit/widgets/products_section.dart';
 import 'package:vertex_bit/widgets/services_section.dart';
 import 'package:vertex_bit/widgets/stats_section.dart';
 import 'package:vertex_bit/widgets/team_section.dart';
+import 'package:vertex_bit/widgets/testimonials_section.dart';
 import '../utils/constants.dart';
 import '../widgets/footer.dart';
 import '../widgets/navbar.dart';
@@ -84,6 +85,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   const _TrustSection(),
                   ServicesSection(key: _servicesKey),
                   ProductsSection(key: _productsKey),
+                  const TestimonialsSection(),
                   TeamSection(key: _teamKey),
                   
                   const Footer(),
