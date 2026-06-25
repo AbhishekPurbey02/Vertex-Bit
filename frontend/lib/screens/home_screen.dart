@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:vertex_bit/widgets/about_section.dart';
+import 'package:vertex_bit/widgets/faq_section.dart';
 import 'package:vertex_bit/widgets/products_section.dart';
 import 'package:vertex_bit/widgets/services_section.dart';
 import 'package:vertex_bit/widgets/stats_section.dart';
@@ -21,6 +22,7 @@ class _HomeScreenState extends State<HomeScreen> {
   final _aboutKey = GlobalKey();
   final _productsKey = GlobalKey();
   final _teamKey = GlobalKey();
+  final _faqKey = GlobalKey();
   int _currentIndex = 0;
 
   void _onItemSelected(int index) {
@@ -87,7 +89,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   ProductsSection(key: _productsKey),
                   const TestimonialsSection(),
                   TeamSection(key: _teamKey),
-                  
+                  FaqSection(key: _faqKey),
                   const Footer(),
                 ],
               ),
@@ -167,9 +169,7 @@ class _HeroSection extends StatelessWidget {
             height: 1.15,
           ),
         ),
-
         const SizedBox(height: 24),
-
         Text(
           "Vertex Bit helps startups and businesses build AI-powered "
           "applications, modern websites, mobile apps, dashboards and "
@@ -181,9 +181,7 @@ class _HeroSection extends StatelessWidget {
             height: 1.7,
           ),
         ),
-
         const SizedBox(height: 40),
-
         Wrap(
           spacing: 20,
           runSpacing: 15,
@@ -211,7 +209,6 @@ class _HeroSection extends StatelessWidget {
                 ),
               ),
             ),
-
             OutlinedButton(
               onPressed: () {},
               style: OutlinedButton.styleFrom(
@@ -283,7 +280,7 @@ class _TrustSection extends StatelessWidget {
               width: width < 700 ? double.infinity : 260,
               child: Column(
                 children: [
-                  Text( 
+                  Text(
                     item.title,
                     textAlign: TextAlign.center,
                     style: const TextStyle(
@@ -314,4 +311,3 @@ class _TrustItem {
 
   const _TrustItem(this.title, this.description);
 }
-

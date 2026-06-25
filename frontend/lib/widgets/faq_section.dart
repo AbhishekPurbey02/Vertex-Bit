@@ -76,8 +76,7 @@ class _FaqSectionState extends State<FaqSection> {
                 },
               ),
               const SizedBox(height: 40),
-              // Bottom buttons
-              _buildBottomButtons(isMobile),
+              
             ],
           ),
         ),
@@ -187,68 +186,6 @@ class _FaqSectionState extends State<FaqSection> {
           ],
         ),
       ),
-    );
-  }
-
-  Widget _buildBottomButtons(bool isMobile) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        ElevatedButton(
-          onPressed: () {
-            // Navigate to services
-            ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(
-                content: Text('Viewing our services...'),
-                behavior: SnackBarBehavior.floating,
-              ),
-            );
-          },
-          style: ElevatedButton.styleFrom(
-            backgroundColor: AppColors.primary,
-            foregroundColor: Colors.white,
-            padding: EdgeInsets.symmetric(
-              horizontal: isMobile ? 30 : 40,
-              vertical: 14,
-            ),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(30),
-            ),
-          ),
-          child: const Text(
-            'Our Services',
-            style: TextStyle(
-              fontWeight: FontWeight.bold,
-              fontSize: 15,
-            ),
-          ),
-        ),
-        const SizedBox(width: 16),
-        OutlinedButton(
-          onPressed: () {
-            // Navigate to contact
-            Navigator.pushNamed(context, '/contact');
-          },
-          style: OutlinedButton.styleFrom(
-            foregroundColor: AppColors.primary,
-            side: BorderSide(color: AppColors.primary, width: 2),
-            padding: EdgeInsets.symmetric(
-              horizontal: isMobile ? 30 : 40,
-              vertical: 14,
-            ),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(30),
-            ),
-          ),
-          child: const Text(
-            'Contact',
-            style: TextStyle(
-              fontWeight: FontWeight.bold,
-              fontSize: 15,
-            ),
-          ),
-        ),
-      ],
     );
   }
 }
