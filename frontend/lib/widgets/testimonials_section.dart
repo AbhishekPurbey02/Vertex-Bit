@@ -20,12 +20,12 @@ class _TestimonialsSectionState extends State<TestimonialsSection> {
       company: 'Safari Yatri',
     ),
     // Add more testimonials here
-    // Testimonial(
-    //   quote: 'Another great testimonial from a happy client...',
-    //   clientName: 'Client Name',
-    //   clientPosition: 'Position, Company',
-    //   company: 'Company Name',
-    // ),
+    Testimonial(
+      quote: 'Another great testimonial from a happy client...',
+      clientName: 'Client Name',
+      clientPosition: 'Position, Company',
+      company: 'Company Name',
+    ),
   ];
 
   @override
