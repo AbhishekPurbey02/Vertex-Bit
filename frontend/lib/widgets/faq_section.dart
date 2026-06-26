@@ -14,7 +14,7 @@ class _FaqSectionState extends State<FaqSection> {
   final List<FaqItem> faqItems = [
     FaqItem(
       question: 'What technologies does Vertex Bit primarily use for software development?',
-      answer: 'We mainly use Flutter, React.js, Node.js, Python (Django), and .NET Core for our development projects, depending on client needs and project requirements. Our team chooses the best technology stack that fits your specific project requirements.',
+      answer: 'We mainly use Flutter,Flask,Sql lite,Postgres SQL, Python (Django), and .NET Core for our development projects, depending on client needs and project requirements. Our team chooses the best technology stack that fits your specific project requirements.',
     ),
     FaqItem(
       question: 'Does Vertex Bit offer multi-platform development?',
