@@ -18,49 +18,63 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  final _servicesKey = GlobalKey();
   final _aboutKey = GlobalKey();
+  final _servicesKey = GlobalKey();
   final _productsKey = GlobalKey();
   final _teamKey = GlobalKey();
   final _faqKey = GlobalKey();
   int _currentIndex = 0;
 
+  void _scrollToSection(GlobalKey key) {
+    final context = key.currentContext;
+    if (context != null) {
+      Scrollable.ensureVisible(
+        context,
+        duration: const Duration(milliseconds: 400),
+        curve: Curves.easeInOut,
+      );
+    }
+  }
+
   void _onItemSelected(int index) {
     setState(() => _currentIndex = index);
 
-    if (index == 0) {
-      Scrollable.ensureVisible(
-        context,
-        duration: const Duration(milliseconds: 250),
-        curve: Curves.easeOut,
-      );
-      return;
-    }
-
-    if (index == 2) {
-      final targetContext = _servicesKey.currentContext;
-      if (targetContext != null) {
+    switch (index) {
+      case 0: // Home - scroll to top
         Scrollable.ensureVisible(
-          targetContext,
-          duration: const Duration(milliseconds: 350),
+          context,
+          duration: const Duration(milliseconds: 400),
           curve: Curves.easeOut,
         );
-      }
-      return;
+        break;
+        
+      case 1: // About - scroll to About section
+        _scrollToSection(_aboutKey);
+        break;
+        
+      case 2: // Services - scroll to Services section
+        _scrollToSection(_servicesKey);
+        break;
+        
+      case 3: // Products - scroll to Products section
+        _scrollToSection(_productsKey);
+        break;
+        
+      case 4: // Contact - navigate to Contact screen
+        Navigator.pushNamed(context, '/contact');
+        break;
+        
+      case 5: // FAQ - scroll to FAQ section
+        _scrollToSection(_faqKey);
+        break;
+        
+      case 6: // Login - DO NOTHING (no popup, no message, nothing)
+        // Intentionally left empty - no action
+        break;
+        
+      default:
+        break;
     }
-
-    if (index == 4) {
-      Navigator.pushNamed(context, '/contact');
-      return;
-    }
-
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content:
-            Text('${navItems[index].title} page is coming in the next phase.'),
-        behavior: SnackBarBehavior.floating,
-      ),
-    );
   }
 
   @override
@@ -101,6 +115,7 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 }
 
+// Rest of your code remains the same...
 class _HeroSection extends StatelessWidget {
   const _HeroSection();
 
@@ -210,7 +225,9 @@ class _HeroSection extends StatelessWidget {
               ),
             ),
             OutlinedButton(
-              onPressed: () {},
+              onPressed: () {
+                // Navigate to services if needed
+              },
               style: OutlinedButton.styleFrom(
                 foregroundColor: Colors.white,
                 side: const BorderSide(
@@ -294,7 +311,9 @@ class _TrustSection extends StatelessWidget {
                     item.description,
                     textAlign: TextAlign.center,
                     style: const TextStyle(
-                        color: AppColors.textGray, fontSize: 14),
+                      color: AppColors.textGray,
+                      fontSize: 14,
+                    ),
                   ),
                 ],
               ),
