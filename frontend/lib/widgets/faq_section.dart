@@ -26,7 +26,7 @@ class _FaqSectionState extends State<FaqSection> {
     ),
     FaqItem(
       question: 'Does Vertex Bit work on AI and innovative projects?',
-      answer: 'Absolutely! We specialize in AI-powered applications, machine learning solutions, and innovative digital products. Our team stays at the forefront of technology to deliver cutting-edge solutions for our clients.',
+      answer: 'Absolutely! We specialize in AI-powered applications, machine learning solutions and innovative digital products. Our team stays at the forefront of technology to deliver cutting-edge solutions for our clients.',
     ),
     FaqItem(
       question: 'What products has Vertex Bit recently developed?',
