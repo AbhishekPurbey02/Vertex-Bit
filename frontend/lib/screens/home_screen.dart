@@ -18,6 +18,7 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  final _homeKey = GlobalKey();
   final _aboutKey = GlobalKey();
   final _servicesKey = GlobalKey();
   final _productsKey = GlobalKey();
@@ -36,16 +37,34 @@ class _HomeScreenState extends State<HomeScreen> {
     }
   }
 
+  // Public method to scroll to home (top of page)
+  void scrollToHome() {
+    // Scroll to the top of the SingleChildScrollView
+    final scrollView = context.findAncestorStateOfType<ScrollableState>();
+    if (scrollView != null) {
+      Scrollable.ensureVisible(
+        context,
+        duration: const Duration(milliseconds: 400),
+        curve: Curves.easeOut,
+      );
+    }
+    
+    // Alternative: Use the homeKey if you wrapped the Hero section with it
+    _scrollToSection(_homeKey);
+  }
+
+  // Public method to scroll to services (used by Hero button)
+  void scrollToServices() {
+    _scrollToSection(_servicesKey);
+  }
+
   void _onItemSelected(int index) {
     setState(() => _currentIndex = index);
 
     switch (index) {
       case 0: // Home - scroll to top
-        Scrollable.ensureVisible(
-          context,
-          duration: const Duration(milliseconds: 400),
-          curve: Curves.easeOut,
-        );
+        // Method 1: Using the homeKey
+        _scrollToSection(_homeKey);
         break;
         
       case 1: // About - scroll to About section
@@ -68,8 +87,7 @@ class _HomeScreenState extends State<HomeScreen> {
         _scrollToSection(_faqKey);
         break;
         
-      case 6: // Login - DO NOTHING (no popup, no message, nothing)
-        // Intentionally left empty - no action
+      case 6: // Login - DO NOTHING
         break;
         
       default:
@@ -95,7 +113,11 @@ class _HomeScreenState extends State<HomeScreen> {
             child: SingleChildScrollView(
               child: Column(
                 children: [
-                  const _HeroSection(),
+                  // Home section with key
+                  Container(
+                    key: _homeKey,
+                    child: const _HeroSection(),
+                  ),
                   AboutSection(key: _aboutKey),
                   const StatsSection(),
                   const _TrustSection(),
@@ -115,7 +137,6 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 }
 
-// Rest of your code remains the same...
 class _HeroSection extends StatelessWidget {
   const _HeroSection();
 
@@ -170,6 +191,9 @@ class _HeroSection extends StatelessWidget {
   }
 
   Widget _heroContent(BuildContext context, bool isMobile) {
+    // Get access to the parent state to call scrollToServices
+    final homeScreenState = context.findAncestorStateOfType<_HomeScreenState>();
+    
     return Column(
       crossAxisAlignment:
           isMobile ? CrossAxisAlignment.center : CrossAxisAlignment.start,
@@ -226,7 +250,10 @@ class _HeroSection extends StatelessWidget {
             ),
             OutlinedButton(
               onPressed: () {
-                // Navigate to services if needed
+                // Scroll to Services section - same as nav bar "Services" click
+                if (homeScreenState != null) {
+                  homeScreenState.scrollToServices();
+                }
               },
               style: OutlinedButton.styleFrom(
                 foregroundColor: Colors.white,
