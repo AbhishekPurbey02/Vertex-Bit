@@ -34,7 +34,7 @@ class _FaqSectionState extends State<FaqSection> {
     ),
     FaqItem(
       question: 'Can Vertex Bit build customized software based on client requirements?',
-      answer: 'Yes, we specialize in custom software development tailored to your specific business needs. From initial discovery to final delivery, we work closely with you to build solutions that solve your unique challenges.',
+      answer: 'Yes, we specialize in custom software development tailored to your specific business needs. From initial discovery to final delivery, we work closely with you to build solutions that solve your novel challenges.',
     ),
   ];
 
