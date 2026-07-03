@@ -23,17 +23,17 @@ class ServicesSection extends StatelessWidget {
     _ServiceItem(
       Icons.storage,
       'Data Solutions',
-      'Structured workflows for analytics, databases, and business reporting.',
+      'Structured workflows for analytics, databases and business reporting.',
     ),
     _ServiceItem(
       Icons.cloud_queue,
       'Cloud Deployment',
-      'Practical deployment setup for modern frontend, backend, and database stacks.',
+      'Practical deployment setup for modern frontend, backend and database stacks.',
     ),
     _ServiceItem(
       Icons.integration_instructions,
-      'API Integration',
-      'Connect websites, apps, and business tools through clean API contracts.',
+      'UI/UX Design',
+      'We design seamless digital experiences through research, rapid prototyping, and usability testing. Our goal is to deliver interfaces that are as functional as they are visually stunning.',
     ),
   ];
 
