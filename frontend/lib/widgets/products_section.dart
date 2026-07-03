@@ -35,7 +35,7 @@ class _ProductsSectionState extends State<ProductsSection> {
                       children: [
                         _buildProductCard(
                           index: 0,
-                          title: 'Lunaccount',
+                          title: 'Vertexaccount',
                           subtitle: 'Cooperative Management System',
                           description:
                               'Complete cooperative management solution with accounting, member management, and reporting.',
@@ -46,7 +46,7 @@ class _ProductsSectionState extends State<ProductsSection> {
                         const SizedBox(height: 24),
                         _buildProductCard(
                           index: 1,
-                          title: 'Lunar School Management',
+                          title: 'Vertex School Management',
                           subtitle: 'School Management Software',
                           description:
                               'Single system containing accounting, library, examination, and total school information system.',
@@ -61,7 +61,7 @@ class _ProductsSectionState extends State<ProductsSection> {
                         Expanded(
                           child: _buildProductCard(
                             index: 0,
-                            title: 'Lunaccount',
+                            title: 'Vertexaccount',
                             subtitle: 'Cooperative Management System',
                             description:
                                 'Complete cooperative management solution with accounting, member management, and reporting.',
@@ -74,7 +74,7 @@ class _ProductsSectionState extends State<ProductsSection> {
                         Expanded(
                           child: _buildProductCard(
                             index: 1,
-                            title: 'Lunar School Management',
+                            title: 'Vertex School Management',
                             subtitle: 'School Management Software',
                             description:
                                 'Single system containing accounting, library, examination, and total school information system.',
