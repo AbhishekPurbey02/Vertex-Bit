@@ -37,10 +37,23 @@ class _HomeScreenState extends State<HomeScreen> {
     }
   }
 
+  // Public method to scroll to home (top of page)
   void scrollToHome() {
+    // Scroll to the top of the SingleChildScrollView
+    final scrollView = context.findAncestorStateOfType<ScrollableState>();
+    if (scrollView != null) {
+      Scrollable.ensureVisible(
+        context,
+        duration: const Duration(milliseconds: 400),
+        curve: Curves.easeOut,
+      );
+    }
+    
+    // Alternative: Use the homeKey if you wrapped the Hero section with it
     _scrollToSection(_homeKey);
   }
 
+  // Public method to scroll to services (used by Hero button)
   void scrollToServices() {
     _scrollToSection(_servicesKey);
   }
@@ -49,26 +62,34 @@ class _HomeScreenState extends State<HomeScreen> {
     setState(() => _currentIndex = index);
 
     switch (index) {
-      case 0:
+      case 0: // Home - scroll to top
+        // Method 1: Using the homeKey
         _scrollToSection(_homeKey);
         break;
-      case 1:
+        
+      case 1: // About - scroll to About section
         _scrollToSection(_aboutKey);
         break;
-      case 2:
+        
+      case 2: // Services - scroll to Services section
         _scrollToSection(_servicesKey);
         break;
-      case 3:
+        
+      case 3: // Products - scroll to Products section
         _scrollToSection(_productsKey);
         break;
-      case 4:
+        
+      case 4: // Contact - navigate to Contact screen
         Navigator.pushNamed(context, '/contact');
         break;
-      case 5:
+        
+      case 5: // FAQ - scroll to FAQ section
         _scrollToSection(_faqKey);
         break;
-      case 6:
+        
+      case 6: // Login - DO NOTHING
         break;
+        
       default:
         break;
     }
@@ -92,6 +113,7 @@ class _HomeScreenState extends State<HomeScreen> {
             child: SingleChildScrollView(
               child: Column(
                 children: [
+                  // Home section with key
                   Container(
                     key: _homeKey,
                     child: const _HeroSection(),
@@ -169,8 +191,9 @@ class _HeroSection extends StatelessWidget {
   }
 
   Widget _heroContent(BuildContext context, bool isMobile) {
+    // Get access to the parent state to call scrollToServices
     final homeScreenState = context.findAncestorStateOfType<_HomeScreenState>();
-
+    
     return Column(
       crossAxisAlignment:
           isMobile ? CrossAxisAlignment.center : CrossAxisAlignment.start,
@@ -202,11 +225,21 @@ class _HeroSection extends StatelessWidget {
           spacing: 20,
           runSpacing: 15,
           children: [
-            _HoverButton(
+            ElevatedButton(
               onPressed: () {
                 Navigator.pushNamed(context, "/contact");
               },
-              isOutlined: false,
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.white,
+                foregroundColor: AppColors.primary,
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 34,
+                  vertical: 20,
+                ),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12),
+                ),
+              ),
               child: const Text(
                 "Get In Touch",
                 style: TextStyle(
@@ -215,13 +248,27 @@ class _HeroSection extends StatelessWidget {
                 ),
               ),
             ),
-            _HoverButton(
+            OutlinedButton(
               onPressed: () {
+                // Scroll to Services section - same as nav bar "Services" click
                 if (homeScreenState != null) {
                   homeScreenState.scrollToServices();
                 }
               },
-              isOutlined: true,
+              style: OutlinedButton.styleFrom(
+                foregroundColor: Colors.white,
+                side: const BorderSide(
+                  color: Colors.white,
+                  width: 2,
+                ),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 34,
+                  vertical: 20,
+                ),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12),
+                ),
+              ),
               child: const Text(
                 "Our Services",
                 style: TextStyle(
@@ -242,86 +289,6 @@ class _HeroSection extends StatelessWidget {
       child: Image.asset(
         "assets/images/hero_team.jpg",
         fit: BoxFit.cover,
-      ),
-    );
-  }
-}
-
-// ⭐ CORRECTED Hover Button Widget
-class _HoverButton extends StatefulWidget {
-  final VoidCallback onPressed;
-  final bool isOutlined;
-  final Widget child;
-
-  const _HoverButton({
-    required this.onPressed,
-    required this.isOutlined,
-    required this.child,
-  });
-
-  @override
-  State<_HoverButton> createState() => _HoverButtonState();
-}
-
-// ⭐ CORRECTED Hover Button State
-class _HoverButtonState extends State<_HoverButton> {
-  bool _isHovered = false;
-
-  @override
-  Widget build(BuildContext context) {
-    return MouseRegion(
-      onEnter: (_) => setState(() {
-        _isHovered = true;
-      }),
-      onExit: (_) => setState(() {
-        _isHovered = false;
-      }),
-      child: AnimatedContainer(
-        duration: const Duration(milliseconds: 200),
-        curve: Curves.easeInOut,
-        transform: _isHovered
-            ? Matrix4.diagonal3Values(1.05, 1.05, 1.0)
-            : Matrix4.identity(),
-        child: widget.isOutlined
-            ? OutlinedButton(
-                onPressed: widget.onPressed,
-                style: OutlinedButton.styleFrom(
-                  foregroundColor:
-                      _isHovered ? AppColors.primary : Colors.white,
-                  backgroundColor:
-                      _isHovered ? Colors.white : Colors.transparent,
-                  side: BorderSide(
-                    color: _isHovered ? Colors.white : Colors.white,
-                    width: 2,
-                  ),
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 34,
-                    vertical: 20,
-                  ),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                ),
-                child: widget.child,
-              )
-            : ElevatedButton(
-                onPressed: widget.onPressed,
-                style: ElevatedButton.styleFrom(
-                  backgroundColor:
-                      _isHovered ? Colors.white.withOpacity(0.9) : Colors.white,
-                  foregroundColor:
-                      _isHovered ? AppColors.primary : AppColors.primary,
-                  elevation: _isHovered ? 8 : 0,
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 34,
-                    vertical: 20,
-                  ),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                ),
-                child: widget.child,
-              ),
       ),
     );
   }
