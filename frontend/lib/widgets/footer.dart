@@ -100,7 +100,7 @@ class _CompanyColumn extends StatelessWidget {
           ),
           const SizedBox(height: 16),
           const Text(
-            'Practical digital solutions for websites, apps, dashboards, and operations.',
+            'Practical digital solutions for websites, apps, dashboards and operations.',
             style: TextStyle(color: Colors.white70, fontSize: 12, height: 1.5),
           ),
         ],
