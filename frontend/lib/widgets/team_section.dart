@@ -17,11 +17,11 @@ class _TeamSectionState extends State<TeamSection> {
 
   final List<TeamMember> teamMembers = [
     TeamMember(
-      name: 'Er. Saroj Ojha',
+      name: 'Er. Abhishek Purbey',
       position: 'Chief Technology Officer',
-      subtitle: '(CTO)',
+      subtitle: '(CTO)- Flutter Developer',
       bio:
-          'Er. Saroj Ojha is the Chief Technology Officer at Vertex Bit with over 10 years of experience in software architecture and cloud solutions. He leads the technology strategy and innovation initiatives.',
+          'Er. Abhishek Purbey is the Chief Technology Officer at Vertex Bit with over 4+ years of experience in software architecture and cloud solutions. He leads the technology strategy and innovation initiatives.',
       socialLinks: {
         'Facebook': 'https://facebook.com/sarojojha',
         'LinkedIn': 'https://linkedin.com/in/sarojojha',
@@ -29,11 +29,11 @@ class _TeamSectionState extends State<TeamSection> {
       },
     ),
     TeamMember(
-      name: 'Er. Chandra Prasad Acharya',
+      name: 'Er. Ravi Yadav',
       position: 'Managing Director',
-      subtitle: 'Senior Dotnet Developer',
+      subtitle: 'SalesForce Developer',
       bio:
-          'Er. Chandra Prasad Acharya is the Managing Director and Senior Dotnet Developer at Vertex Bit. With 12+ years of experience, he specializes in enterprise applications and team leadership.',
+          'Er. Ravi Yadav is the Senior SalesForce Developer at Vertex Bit. With 4+ years of experience, he specializes in enterprise applications and team leadership.',
       socialLinks: {
         'Facebook': 'https://facebook.com/chandraacharya',
         'LinkedIn': 'https://linkedin.com/in/chandraacharya',
@@ -42,10 +42,10 @@ class _TeamSectionState extends State<TeamSection> {
     ),
     // Add more members here to test horizontal scrolling
     TeamMember(
-      name: 'Er. Ram Sharma',
-      position: 'Senior Developer',
+      name: 'Er. Krishna Kant Yadav',
+      position: 'PHP, Developer',
       subtitle: 'Full Stack Expert',
-      bio: 'Er. Ram Sharma is a Senior Developer with 8 years of experience...',
+      bio: 'Er. Krishna Kant Yadav is a PHP Developer with 4+ years of experience, he specializes in enterprise applications and team leadership.',
       socialLinks: {
         'Facebook': 'https://facebook.com/ramsharma',
         'LinkedIn': 'https://linkedin.com/in/ramsharma',
