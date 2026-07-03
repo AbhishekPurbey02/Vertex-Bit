@@ -33,7 +33,7 @@ class ServicesSection extends StatelessWidget {
     _ServiceItem(
       Icons.integration_instructions,
       'UI/UX Design',
-      'We design seamless digital experiences through research, rapid prototyping, and usability testing. Our goal is to deliver interfaces that are as functional as they are visually stunning.',
+      'We design seamless digital experiences through research, rapid prototyping and usability testing. Our goal is to deliver interfaces that are as functional as they are visually stunning.',
     ),
   ];
 
@@ -90,55 +90,103 @@ class ServicesSection extends StatelessWidget {
   }
 }
 
-class _ServiceCard extends StatelessWidget {
+// ⭐ UPDATED: Service Card with hover effect (like Products section)
+class _ServiceCard extends StatefulWidget {
   final _ServiceItem service;
 
   const _ServiceCard({required this.service});
 
   @override
+  State<_ServiceCard> createState() => _ServiceCardState();
+}
+
+// ⭐ NEW: State for Service Card with hover animation
+class _ServiceCardState extends State<_ServiceCard> {
+  bool _isHovered = false;
+
+  @override
   Widget build(BuildContext context) {
-    return Container(
-      constraints: const BoxConstraints(minHeight: 198),
-      padding: const EdgeInsets.all(24),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(8),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withValues(alpha: 0.06),
-            blurRadius: 14,
-            offset: const Offset(0, 6),
-          ),
-        ],
-        border: Border.all(color: Colors.black.withValues(alpha: 0.08)),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Container(
-            width: 48,
-            height: 48,
-            decoration: BoxDecoration(
-              color: AppColors.primary.withValues(alpha: 0.10),
-              borderRadius: BorderRadius.circular(8),
+    return MouseRegion(
+      onEnter: (_) => setState(() => _isHovered = true),
+      onExit: (_) => setState(() => _isHovered = false),
+      child: AnimatedContainer(
+        duration: const Duration(milliseconds: 300),
+        curve: Curves.easeInOut,
+        // ⭐ Lift up on hover (like Products section)
+        transform: _isHovered
+            ? Matrix4.translationValues(0, -8, 0) // Lift up by 8px
+            : Matrix4.identity(),
+        child: Container(
+          constraints: const BoxConstraints(minHeight: 198),
+          padding: const EdgeInsets.all(24),
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(16),
+            boxShadow: _isHovered
+                ? [
+                    // ⭐ Enhanced shadow on hover (like Products section)
+                    BoxShadow(
+                      color: AppColors.primary.withOpacity(0.2),
+                      blurRadius: 20,
+                      spreadRadius: 5,
+                      offset: const Offset(0, 10),
+                    ),
+                  ]
+                : [
+                    BoxShadow(
+                      color: Colors.black.withOpacity(0.06),
+                      blurRadius: 14,
+                      offset: const Offset(0, 6),
+                    ),
+                  ],
+            border: Border.all(
+              color: _isHovered ? AppColors.primary : Colors.black.withOpacity(0.08),
+              width: _isHovered ? 2 : 1,
             ),
-            child: Icon(service.icon, color: AppColors.primary, size: 28),
           ),
-          const SizedBox(height: 16),
-          Text(
-            service.title,
-            style: const TextStyle(
-              fontSize: 20,
-              fontWeight: FontWeight.bold,
-              color: AppColors.textDark,
-            ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              // ⭐ Icon container with hover effect
+              AnimatedContainer(
+                duration: const Duration(milliseconds: 300),
+                curve: Curves.easeInOut,
+                width: 48,
+                height: 48,
+                decoration: BoxDecoration(
+                  color: _isHovered
+                      ? AppColors.primary.withOpacity(0.15)
+                      : AppColors.primary.withOpacity(0.10),
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                child: Icon(
+                  widget.service.icon,
+                  color: _isHovered ? AppColors.primary : AppColors.primary,
+                  size: 28,
+                ),
+              ),
+              const SizedBox(height: 16),
+              // ⭐ Title with hover effect
+              Text(
+                widget.service.title,
+                style: TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                  color: AppColors.textDark,
+                ),
+              ),
+              const SizedBox(height: 8),
+              // ⭐ Description with hover effect
+              Text(
+                widget.service.description,
+                style: TextStyle(
+                  color: AppColors.textGray,
+                  height: 1.5,
+                ),
+              ),
+            ],
           ),
-          const SizedBox(height: 8),
-          Text(
-            service.description,
-            style: const TextStyle(color: AppColors.textGray, height: 1.5),
-          ),
-        ],
+        ),
       ),
     );
   }
