@@ -132,8 +132,8 @@ class _ContactScreenState extends State<ContactScreen> {
                     runSpacing: 16,
                     children: [
                       _ContactCard(Icons.location_on, 'Address', 'Nepal'),
-                      _ContactCard(Icons.email, 'Email', AppStrings.email),
-                      _ContactCard(Icons.phone, 'Phone', AppStrings.phone),
+                      _ContactCard(Icons.email, 'Email', 'abhiishek57@gmail.com'),
+                      _ContactCard(Icons.phone, 'Phone', '+977 9766359540'),
                     ],
                   ),
                   const SizedBox(height: 36),
