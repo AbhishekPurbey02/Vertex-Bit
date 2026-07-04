@@ -38,7 +38,7 @@ class Footer extends StatelessWidget {
               ),
               _FooterColumn(
                 title: 'Contact',
-                items: [AppStrings.email, AppStrings.phone, 'Nepal'],
+                items: ['abhiishek57@gmail.com', '+977 9766359540', 'Nepal'],
               ),
             ],
           ),
