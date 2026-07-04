@@ -52,7 +52,7 @@ class _StatsSectionState extends State<StatsSection> {
                     const SizedBox(height: 30),
                     _buildStatCard(
                       icon: Icons.star_outline,
-                      number: '15+',
+                      number: '5+',
                       label: 'Years of Excellence',
                       isMobile: true,
                     ),
