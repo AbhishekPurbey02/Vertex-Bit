@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'package:vertex_bit/widgets/about_section.dart';
 import 'package:vertex_bit/widgets/faq_section.dart';
 import 'package:vertex_bit/widgets/products_section.dart';
@@ -49,11 +51,9 @@ class _HomeScreenState extends State<HomeScreen> {
       );
     }
     
-    // Alternative: Use the homeKey if you wrapped the Hero section with it
     _scrollToSection(_homeKey);
   }
 
-  // Public method to scroll to services (used by Hero button)
   void scrollToServices() {
     _scrollToSection(_servicesKey);
   }
@@ -94,6 +94,40 @@ class _HomeScreenState extends State<HomeScreen> {
         break;
     }
   }
+  Future<void> _launchWhatsApp() async {
+    final phoneNumber = '+919742564402';
+    // Remove '+' and any spaces
+    final cleanNumber = phoneNumber.replaceAll(RegExp(r'[^0-9]'), '');
+    final url = 'https://wa.me/$cleanNumber';
+    
+    try {
+      if (await canLaunchUrl(Uri.parse(url))) {
+        await launchUrl(Uri.parse(url));
+      } else {
+        // Fallback: open web version if app not installed
+        final webUrl = 'https://web.whatsapp.com/send?phone=$cleanNumber';
+        if (await canLaunchUrl(Uri.parse(webUrl))) {
+          await launchUrl(Uri.parse(webUrl));
+        } else {
+          // Show error message
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text('Could not open WhatsApp. Please check your internet connection.'),
+              behavior: SnackBarBehavior.floating,
+            ),
+          );
+        }
+      }
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Error: $e'),
+          behavior: SnackBarBehavior.floating,
+        ),
+      );
+    }
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -103,6 +137,21 @@ class _HomeScreenState extends State<HomeScreen> {
         onItemSelected: _onItemSelected,
       ),
       backgroundColor: Colors.white,
+      floatingActionButton: FloatingActionButton.extended(
+        onPressed: _launchWhatsApp,
+        backgroundColor: Colors.green,
+        foregroundColor: Colors.white,
+        icon: const FaIcon(FontAwesomeIcons.whatsapp, size: 28),
+        label: const Text(
+          'Chat with us',
+          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+        ),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(30),
+        ),
+        elevation: 6,
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
       body: Column(
         children: [
           Navbar(
@@ -113,7 +162,7 @@ class _HomeScreenState extends State<HomeScreen> {
             child: SingleChildScrollView(
               child: Column(
                 children: [
-                  // Home section with key
+                  
                   Container(
                     key: _homeKey,
                     child: const _HeroSection(),
@@ -191,7 +240,7 @@ class _HeroSection extends StatelessWidget {
   }
 
   Widget _heroContent(BuildContext context, bool isMobile) {
-    // Get access to the parent state to call scrollToServices
+    
     final homeScreenState = context.findAncestorStateOfType<_HomeScreenState>();
     
     return Column(
@@ -250,7 +299,7 @@ class _HeroSection extends StatelessWidget {
             ),
             OutlinedButton(
               onPressed: () {
-                // Scroll to Services section - same as nav bar "Services" click
+                
                 if (homeScreenState != null) {
                   homeScreenState.scrollToServices();
                 }
