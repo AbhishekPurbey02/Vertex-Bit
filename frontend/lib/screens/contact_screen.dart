@@ -127,11 +127,12 @@ class _ContactScreenState extends State<ContactScreen> {
                     ),
                   ),
                   const SizedBox(height: 28),
-                  const Wrap(
+                  // ⭐ Updated: Wrap with hoverable contact cards
+                  Wrap(
                     spacing: 16,
                     runSpacing: 16,
-                    children: [
-                      _ContactCard(Icons.location_on, 'Address', 'Nepal'),
+                    children: const [
+                      _ContactCard(Icons.location_on, 'Address', 'Mahabir Chowk,Siraha,Nepal'),
                       _ContactCard(Icons.email, 'Email', 'abhiishek57@gmail.com'),
                       _ContactCard(Icons.phone, 'Phone', '+977 9766359540'),
                     ],
@@ -302,7 +303,8 @@ class _ContactScreenState extends State<ContactScreen> {
   }
 }
 
-class _ContactCard extends StatelessWidget {
+// ⭐ UPDATED: Contact Card with hover effect (like Products section)
+class _ContactCard extends StatefulWidget {
   final IconData icon;
   final String title;
   final String value;
@@ -310,40 +312,80 @@ class _ContactCard extends StatelessWidget {
   const _ContactCard(this.icon, this.title, this.value);
 
   @override
+  State<_ContactCard> createState() => _ContactCardState();
+}
+
+class _ContactCardState extends State<_ContactCard> {
+  bool _isHovered = false;
+
+  @override
   Widget build(BuildContext context) {
     final width = MediaQuery.sizeOf(context).width;
+    final isMobile = width < 720;
 
-    return SizedBox(
-      width: width < 720 ? double.infinity : 320,
-      child: Container(
-        padding: const EdgeInsets.all(16),
+    return MouseRegion(
+      onEnter: (_) => setState(() => _isHovered = true),
+      onExit: (_) => setState(() => _isHovered = false),
+      child: AnimatedContainer(
+        duration: const Duration(milliseconds: 300),
+        curve: Curves.easeInOut,
+        // ⭐ Lift up on hover (exactly like Products section)
+        transform: _isHovered && !isMobile
+            ? Matrix4.translationValues(0, -8, 0)
+            : Matrix4.identity(),
+        width: isMobile ? double.infinity : 320,
         decoration: BoxDecoration(
           color: AppColors.surface,
-          borderRadius: BorderRadius.circular(8),
-          border: Border.all(color: Colors.black.withValues(alpha: 0.08)),
+          borderRadius: BorderRadius.circular(16),
+          boxShadow: _isHovered && !isMobile
+              ? [
+                  // ⭐ Enhanced shadow on hover (like Products section)
+                  BoxShadow(
+                    color: AppColors.primary.withOpacity(0.2),
+                    blurRadius: 20,
+                    spreadRadius: 5,
+                    offset: const Offset(0, 10),
+                  ),
+                ]
+              : [
+                  BoxShadow(
+                    color: Colors.black.withOpacity(0.06),
+                    blurRadius: 14,
+                    offset: const Offset(0, 6),
+                  ),
+                ],
+          border: Border.all(
+            color: _isHovered && !isMobile
+                ? AppColors.primary
+                : Colors.black.withOpacity(0.08),
+            width: _isHovered && !isMobile ? 2 : 1,
+          ),
         ),
-        child: Column(
-          children: [
-            Container(
-              padding: const EdgeInsets.all(10),
-              decoration: BoxDecoration(
-                color: AppColors.primary.withValues(alpha: 0.10),
-                borderRadius: BorderRadius.circular(8),
+        child: Padding(
+          padding: const EdgeInsets.all(16),
+          child: Column(
+            children: [
+              Container(
+                padding: const EdgeInsets.all(10),
+                decoration: BoxDecoration(
+                  color: AppColors.primary.withOpacity(0.10),
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                child: Icon(widget.icon, color: AppColors.primary, size: 24),
               ),
-              child: Icon(icon, color: AppColors.primary, size: 24),
-            ),
-            const SizedBox(height: 12),
-            Text(
-              title,
-              style: const TextStyle(color: AppColors.textLight, fontSize: 12),
-            ),
-            const SizedBox(height: 4),
-            Text(
-              value,
-              textAlign: TextAlign.center,
-              style: const TextStyle(fontSize: 14, color: AppColors.textDark),
-            ),
-          ],
+              const SizedBox(height: 12),
+              Text(
+                widget.title,
+                style: const TextStyle(color: AppColors.textLight, fontSize: 12),
+              ),
+              const SizedBox(height: 4),
+              Text(
+                widget.value,
+                textAlign: TextAlign.center,
+                style: const TextStyle(fontSize: 14, color: AppColors.textDark),
+              ),
+            ],
+          ),
         ),
       ),
     );
@@ -366,7 +408,7 @@ class _StatusMessage extends StatelessWidget {
       margin: const EdgeInsets.only(bottom: 12),
       padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
-        color: color.withValues(alpha: 0.10),
+        color: color.withOpacity(0.10),
         borderRadius: BorderRadius.circular(8),
         border: Border.all(color: color),
       ),
