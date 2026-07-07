@@ -19,9 +19,9 @@ class _TeamSectionState extends State<TeamSection> {
     TeamMember(
       name: 'Er. Abhishek Purbey',
       position: 'Chief Technology Officer',
-      subtitle: '(CTO)- Flutter Developer',
+      subtitle: '(CTO)- Full Stack Expert',
       bio:
-          'Er. Abhishek Purbey is the Chief Technology Officer at Vertex Bit with over 4+ years of experience in software architecture and cloud solutions. He leads the technology strategy and innovation initiatives.',
+          'Er. Abhishek Purbey is the Chief Technology Officer at Vertex Bit with over 5+ years of experience in software architecture and cloud solutions. He leads the technology strategy and innovation initiatives.',
       socialLinks: {
         'Facebook': 'https://facebook.com/sarojojha',
         'LinkedIn': 'https://linkedin.com/in/sarojojha',
@@ -30,8 +30,8 @@ class _TeamSectionState extends State<TeamSection> {
     ),
     TeamMember(
       name: 'Er. Ravi Yadav',
-      position: 'Managing Director',
-      subtitle: 'SalesForce Developer',
+      position: 'SalesForce Developer',
+      subtitle: '',
       bio:
           'Er. Ravi Yadav is the Senior SalesForce Developer at Vertex Bit. With 4+ years of experience, he specializes in enterprise applications and team leadership.',
       socialLinks: {
@@ -40,11 +40,23 @@ class _TeamSectionState extends State<TeamSection> {
         'Instagram': 'https://instagram.com/chandraacharya',
       },
     ),
+    TeamMember(
+      name: 'Er. Saloni Thakur',
+      position: 'UI/UX Designer',
+      subtitle: '',
+      bio:
+          'Er. Saloni Thakur is the Senior UI/UX Designer at Vertex Bit. With 3+ years of experience, She specializes in Desigining enterprise applications and team leadership',
+      socialLinks: {
+        'Facebook': 'https://facebook.com/sarojojha',
+        'LinkedIn': 'https://linkedin.com/in/sarojojha',
+        'Instagram': 'https://instagram.com/sarojojha',
+      },
+    ),
     // Add more members here to test horizontal scrolling
     TeamMember(
       name: 'Er. Krishna Kant Yadav',
       position: 'PHP, Developer',
-      subtitle: 'Full Stack Expert',
+      subtitle: '',
       bio: 'Er. Krishna Kant Yadav is a PHP Developer with 4+ years of experience, he specializes in enterprise applications and team leadership.',
       socialLinks: {
         'Facebook': 'https://facebook.com/ramsharma',
@@ -75,7 +87,7 @@ class _TeamSectionState extends State<TeamSection> {
             _scrollController.position.maxScrollExtent - 10;
 
         // Update indicator index
-        final double cardWidth = 380 + 24; // Card width + spacing
+        final double cardWidth = 350 + 24; // Card width + spacing
         _currentIndicatorIndex = (_scrollController.offset / cardWidth).round();
         if (_currentIndicatorIndex >= teamMembers.length) {
           _currentIndicatorIndex = teamMembers.length - 1;
